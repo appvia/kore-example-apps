@@ -1,7 +1,4 @@
-![Github Actions CI Pipeline](./images/github-actions-ci.png)
-
-Create ASP.NET Core Web App
-------
+## Create ASP.NET Core Web App
 
 ```
 dotnet new webapp -o dotnet-hello-world -n NetCore.Docker
@@ -9,26 +6,30 @@ dotnet new webapp -o dotnet-hello-world -n NetCore.Docker
 
 All templates available [here](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new).
 
-Choose how to deploy and manage the application in the Cloud
-------
-
-**Build and run the Docker image**
+## Build and package the application
 
 ```
 docker build -t dotnet-core-hello-world .
-docker run --name dotnet-core-hello-world -d -p 8080:80 dotnet-core-hello-world
 ```
 
 More information available [here](https://docs.docker.com/engine/examples/dotnetcore/).
 
-**Deploy the application in a Kubernetes cluster**
+## Deploy the application
+
+### Docker
+
+```
+docker run --name dotnet-core-hello-world -d -p 8080:80 dotnet-core-hello-world
+```
+
+### Helm
 
 ```
 helm install dotnet-hello-world charts/dotnet-hello-world -n ${NAMESPACE}
 kubectl port-forward service/dotnet-hello-world 8080 8080 -n ${NAMESPACE}
 ```
 
-**Deploy the application deployment with Flux Helm Operator**
+### Helm Flux Operator
 
 Create a secret with the username and password that give access to the Git repository:
 ```
@@ -56,7 +57,12 @@ spec:
 EOF
 ```
 
-View the web page
-------
+## View the web page
 
 Go to http://localhost:8080 in a web browser.
+
+## CI with GitHub Actions, Kore and Helm
+
+This repository demonstrates the use of GitHub Actions, Kore and Helm to achieve a simple continuous integration pipeline i.e. `.github/workflows/dotnet-hello-world.yml`.
+
+![Github Actions CI Pipeline](./images/github-actions-ci.png)
