@@ -28,7 +28,7 @@ jobs:
         env:
           KORE_SERVER: ${{ secrets.KORE_SERVER }}
           KORE_TEAM: ${{ secrets.KORE_TEAM }}
-          KORE_TOKEN: ${{ secrets.KORE_TOKEN }}
+          KORE_TOKEN: ${{ secrets.DOTNET_KORE_TOKEN }}
         run: |
           echo "Running build from $BRANCH_NAME branch"
           kore run build dotnet-hello-world -t "$KORE_TEAM" -b "$BRANCH_NAME" --tag ${{ github.sha }}
