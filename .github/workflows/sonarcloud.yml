@@ -18,5 +18,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet tool install --global dotnet-sonarscanner --version 5.0.4
-          dotnet sonarscanner begin /k:"appvia_kore-example-apps" /o:"appvia" /d:sonar.login="$SONAR_TOKEN"
+          dotnet sonarscanner begin /k:"appvia_kore-example-apps" /o:"appvia" /d:sonar.login="$SONAR_TOKEN" /d:sonar.sources="dotnet-hello-world"
           dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
