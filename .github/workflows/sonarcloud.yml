@@ -11,17 +11,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Sonarscanner for dotnet
-        uses: Secbyte/dotnet-sonarscanner@v2.3
-        with:
-          buildCommand: dotnet build dotnet-hello-world
-          projectKey: appvia_kore-example-apps
-          projectName: kore-example-apps
-          sonarOrganisation: appvia
-          beginArguments: >
-              /d:sonar.verbose="true"
-              /d:sonar.cs.opencover.reportsPaths='"/path/to/coverage.xml","/path/to/coverage.2.xml"'
-              /d:sonar.coverage.exclusions='"**/*.cs","**/*.md"'
+      - name: Setup dotnet core
+        uses: actions/setup-dotnet@v1
+      - name: Install and run dotnet-sonarscanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 5.0.4
+          dotnet sonarscanner begin \
+            /o:appvia \
+            /k:appvia_kore-example-apps \
+            /d:sonar.host.url=https://sonarcloud.io
+          dotnet sonarscanner end
