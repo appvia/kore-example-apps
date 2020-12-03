@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<coverage line-rate="0.0898" branch-rate="0" version="1.9" timestamp="1607035771" lines-covered="8" lines-valid="89" branches-covered="0" branches-valid="26">
+  <sources>
+    <source>/Users/mohammudyassinejaffoo/Workspace/appvia/kore-example-apps/dotnet-hello-world/</source>
+  </sources>
+  <packages>
+    <package name="NetCore.Docker.Views" line-rate="0" branch-rate="0" complexity="23">
+      <classes>
+        <class name="NetCore.Docker.Pages.Pages_Error/&lt;ExecuteAsync&gt;d__0" filename="Pages/Error.cshtml" line-rate="0" branch-rate="0" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="4" hits="0" branch="False" />
+                <line number="10" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="70" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="11" hits="0" branch="False" />
+                <line number="13" hits="0" branch="False" />
+                <line number="15" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="4" hits="0" branch="False" />
+            <line number="10" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="70" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="11" hits="0" branch="False" />
+            <line number="13" hits="0" branch="False" />
+            <line number="15" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.Pages_Index/&lt;ExecuteAsync&gt;d__0" filename="Pages/Index.cshtml" line-rate="0" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="4" hits="0" branch="False" />
+                <line number="10" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="4" hits="0" branch="False" />
+            <line number="10" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.Pages_Privacy/&lt;ExecuteAsync&gt;d__0" filename="Pages/Privacy.cshtml" line-rate="0" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="4" hits="0" branch="False" />
+                <line number="6" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="4" hits="0" branch="False" />
+            <line number="6" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.Pages__ViewStart/&lt;ExecuteAsync&gt;d__0" filename="Pages/_ViewStart.cshtml" line-rate="0" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="2" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="2" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.Shared.Pages_Shared__Layout/&lt;&lt;ExecuteAsync&gt;b__22_0&gt;d" filename="Pages/Shared/_Layout.cshtml" line-rate="0" branch-rate="0" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="4">
+              <lines>
+                <line number="6" hits="0" branch="True" condition-coverage="0% (0/4)">
+                  <conditions>
+                    <condition number="425" type="jump" coverage="0%" />
+                    <condition number="921" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="6" hits="0" branch="True" condition-coverage="0% (0/4)">
+              <conditions>
+                <condition number="425" type="jump" coverage="0%" />
+                <condition number="921" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.Shared.Pages_Shared__Layout/&lt;&lt;ExecuteAsync&gt;b__22_1&gt;d" filename="Pages/Shared/_Layout.cshtml" line-rate="0" branch-rate="0" complexity="14">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="14">
+              <lines>
+                <line number="34" hits="0" branch="True" condition-coverage="0% (0/12)">
+                  <conditions>
+                    <condition number="537" type="jump" coverage="0%" />
+                    <condition number="1105" type="jump" coverage="0%" />
+                    <condition number="1673" type="jump" coverage="0%" />
+                    <condition number="2259" type="jump" coverage="0%" />
+                    <condition number="2733" type="jump" coverage="0%" />
+                    <condition number="3209" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="46" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="3834" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="48" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="34" hits="0" branch="True" condition-coverage="0% (0/12)">
+              <conditions>
+                <condition number="537" type="jump" coverage="0%" />
+                <condition number="1105" type="jump" coverage="0%" />
+                <condition number="1673" type="jump" coverage="0%" />
+                <condition number="2259" type="jump" coverage="0%" />
+                <condition number="2733" type="jump" coverage="0%" />
+                <condition number="3209" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="46" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="3834" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="48" hits="0" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="NetCore.Docker" line-rate="0.1066" branch-rate="0" complexity="22">
+      <classes>
+        <class name="NetCore.Docker.Program" filename="Program.cs" line-rate="0" branch-rate="1" complexity="2">
+          <methods>
+            <method name="Main" signature="(System.String[])" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="0" branch="False" />
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="CreateHostBuilder" signature="(System.String[])" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="0" branch="False" />
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+                <line number="23" hits="0" branch="False" />
+                <line number="24" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="15" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="20" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="23" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Startup" filename="Startup.cs" line-rate="0" branch-rate="0" complexity="5">
+          <methods>
+            <method name="get_Configuration" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ConfigureServices" signature="(Microsoft.Extensions.DependencyInjection.IServiceCollection)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="25" hits="0" branch="False" />
+                <line number="26" hits="0" branch="False" />
+                <line number="27" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Configure" signature="(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="31" hits="0" branch="False" />
+                <line number="32" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="9" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="33" hits="0" branch="False" />
+                <line number="34" hits="0" branch="False" />
+                <line number="35" hits="0" branch="False" />
+                <line number="37" hits="0" branch="False" />
+                <line number="38" hits="0" branch="False" />
+                <line number="40" hits="0" branch="False" />
+                <line number="41" hits="0" branch="False" />
+                <line number="43" hits="0" branch="False" />
+                <line number="44" hits="0" branch="False" />
+                <line number="46" hits="0" branch="False" />
+                <line number="48" hits="0" branch="False" />
+                <line number="50" hits="0" branch="False" />
+                <line number="51" hits="0" branch="False" />
+                <line number="52" hits="0" branch="False" />
+                <line number="53" hits="0" branch="False" />
+                <line number="54" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(Microsoft.Extensions.Configuration.IConfiguration)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="21" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
+            <line number="26" hits="0" branch="False" />
+            <line number="27" hits="0" branch="False" />
+            <line number="31" hits="0" branch="False" />
+            <line number="32" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="9" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="33" hits="0" branch="False" />
+            <line number="34" hits="0" branch="False" />
+            <line number="35" hits="0" branch="False" />
+            <line number="37" hits="0" branch="False" />
+            <line number="38" hits="0" branch="False" />
+            <line number="40" hits="0" branch="False" />
+            <line number="41" hits="0" branch="False" />
+            <line number="43" hits="0" branch="False" />
+            <line number="44" hits="0" branch="False" />
+            <line number="46" hits="0" branch="False" />
+            <line number="48" hits="0" branch="False" />
+            <line number="50" hits="0" branch="False" />
+            <line number="51" hits="0" branch="False" />
+            <line number="52" hits="0" branch="False" />
+            <line number="53" hits="0" branch="False" />
+            <line number="54" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.ErrorModel" filename="Pages/Error.cshtml.cs" line-rate="0" branch-rate="0" complexity="7">
+          <methods>
+            <method name="get_RequestId" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ShowRequestId" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="17" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="OnGet" signature="()" line-rate="0" branch-rate="0" complexity="4">
+              <lines>
+                <line number="27" hits="0" branch="False" />
+                <line number="28" hits="0" branch="True" condition-coverage="0% (0/4)">
+                  <conditions>
+                    <condition number="8" type="jump" coverage="0%" />
+                    <condition number="20" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="29" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(Microsoft.Extensions.Logging.ILogger`1&lt;NetCore.Docker.Pages.ErrorModel&gt;)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+                <line number="23" hits="0" branch="False" />
+                <line number="24" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="15" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="27" hits="0" branch="False" />
+            <line number="28" hits="0" branch="True" condition-coverage="0% (0/4)">
+              <conditions>
+                <condition number="8" type="jump" coverage="0%" />
+                <condition number="20" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="29" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="23" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.IndexModel" filename="Pages/Index.cshtml.cs" line-rate="0.44439999999999996" branch-rate="1" complexity="4">
+          <methods>
+            <method name="GetHostName" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="1" branch="False" />
+                <line number="23" hits="1" branch="False" />
+                <line number="24" hits="1" branch="False" />
+                <line number="25" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="GetDotNetVersion" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="1" branch="False" />
+                <line number="29" hits="1" branch="False" />
+                <line number="30" hits="1" branch="False" />
+                <line number="31" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="OnGet" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="34" hits="0" branch="False" />
+                <line number="35" hits="0" branch="False" />
+                <line number="36" hits="0" branch="False" />
+                <line number="37" hits="0" branch="False" />
+                <line number="38" hits="0" branch="False" />
+                <line number="39" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(Microsoft.Extensions.Logging.ILogger`1&lt;NetCore.Docker.Pages.IndexModel&gt;)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="22" hits="1" branch="False" />
+            <line number="23" hits="1" branch="False" />
+            <line number="24" hits="1" branch="False" />
+            <line number="25" hits="1" branch="False" />
+            <line number="28" hits="1" branch="False" />
+            <line number="29" hits="1" branch="False" />
+            <line number="30" hits="1" branch="False" />
+            <line number="31" hits="1" branch="False" />
+            <line number="34" hits="0" branch="False" />
+            <line number="35" hits="0" branch="False" />
+            <line number="36" hits="0" branch="False" />
+            <line number="37" hits="0" branch="False" />
+            <line number="38" hits="0" branch="False" />
+            <line number="39" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.PrivacyModel" filename="Pages/Privacy.cshtml.cs" line-rate="0" branch-rate="1" complexity="2">
+          <methods>
+            <method name="OnGet" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(Microsoft.Extensions.Logging.ILogger`1&lt;NetCore.Docker.Pages.PrivacyModel&gt;)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="0" branch="False" />
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="15" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="NetCore.Docker.Pages.UnitTests.HelloWorldTest" filename="tests/HelloWorldTest.cs" line-rate="0" branch-rate="1" complexity="2">
+          <methods>
+            <method name="IsHostnameCorrect" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="0" branch="False" />
+                <line number="12" hits="0" branch="False" />
+                <line number="13" hits="0" branch="False" />
+                <line number="14" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="IsDotNetOnLTSVersion" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
+                <line number="20" hits="0" branch="False" />
+                <line number="21" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="0" branch="False" />
+            <line number="12" hits="0" branch="False" />
+            <line number="13" hits="0" branch="False" />
+            <line number="14" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+            <line number="20" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

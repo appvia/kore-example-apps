@@ -35,6 +35,12 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "xUnit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

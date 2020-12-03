@@ -2,6 +2,12 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "coverlet.collector/1.3.0": {
+        "type": "package",
+        "build": {
+          "build/netstandard1.0/coverlet.collector.targets": {}
+        }
+      },
       "Microsoft.CodeCoverage/16.8.0": {
         "type": "package",
         "compile": {
@@ -1662,6 +1668,38 @@
     }
   },
   "libraries": {
+    "coverlet.collector/1.3.0": {
+      "sha512": "t8pnf5SX2ya0RX4vjoxsbhDMQCZJcpPun2neHKJ4FouMmObylo25FvoOydvf3Bl+l+IzWw7u2vjEeCBHnleB9g==",
+      "type": "package",
+      "path": "coverlet.collector/1.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/netstandard1.0/Microsoft.DotNet.PlatformAbstractions.dll",
+        "build/netstandard1.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "build/netstandard1.0/Microsoft.Extensions.DependencyInjection.dll",
+        "build/netstandard1.0/Microsoft.Extensions.DependencyModel.dll",
+        "build/netstandard1.0/Microsoft.Extensions.FileSystemGlobbing.dll",
+        "build/netstandard1.0/Microsoft.TestPlatform.CoreUtilities.dll",
+        "build/netstandard1.0/Microsoft.TestPlatform.PlatformAbstractions.dll",
+        "build/netstandard1.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+        "build/netstandard1.0/Mono.Cecil.Mdb.dll",
+        "build/netstandard1.0/Mono.Cecil.Pdb.dll",
+        "build/netstandard1.0/Mono.Cecil.Rocks.dll",
+        "build/netstandard1.0/Mono.Cecil.dll",
+        "build/netstandard1.0/Newtonsoft.Json.dll",
+        "build/netstandard1.0/NuGet.Frameworks.dll",
+        "build/netstandard1.0/coverlet.collector.deps.json",
+        "build/netstandard1.0/coverlet.collector.dll",
+        "build/netstandard1.0/coverlet.collector.pdb",
+        "build/netstandard1.0/coverlet.collector.targets",
+        "build/netstandard1.0/coverlet.core.dll",
+        "build/netstandard1.0/coverlet.core.pdb",
+        "coverlet-icon.png",
+        "coverlet.collector.1.3.0.nupkg.sha512",
+        "coverlet.collector.nuspec"
+      ]
+    },
     "Microsoft.CodeCoverage/16.8.0": {
       "sha512": "fR7HsWO+jTRhfBPWVl6QJbJSEU98siIKcQIDIo2tOH6nlogcOdScquWzVABR0UUpQlfWwt13vyryOltvLfsHnw==",
       "type": "package",
@@ -5600,6 +5638,7 @@
     ".NETCoreApp,Version=v3.1": [
       "Microsoft.NET.Test.Sdk >= 16.8.0",
       "NetCore.Docker >= 1.0.0",
+      "coverlet.collector >= 1.3.0",
       "xunit >= 2.4.1",
       "xunit.runner.visualstudio >= 2.4.3"
     ]
@@ -5646,6 +5685,12 @@
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
             "version": "[16.8.0, )"
+          },
+          "coverlet.collector": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[1.3.0, )"
           },
           "xunit": {
             "target": "Package",
