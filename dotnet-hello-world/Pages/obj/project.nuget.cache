@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "GIVglxab7doXTmupTIu98/3XtMVvupiFX17ndrcJLBDIgMDqfdJGUdT0eFlWWLmngl5jaOcyzRxUxcBYzApHTw==",
+  "success": true,
+  "projectFilePath": "/Users/mohammudyassinejaffoo/Workspace/appvia/kore-example-apps/dotnet-hello-world/Pages/Pages.csproj",
+  "expectedPackageFiles": [
+    "/Users/mohammudyassinejaffoo/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/mohammudyassinejaffoo/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
