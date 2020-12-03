@@ -10,7 +10,7 @@ namespace NetCore.Docker.Pages.UnitTests
     public void IsHostnameCorrect()
     {
       var host = IndexModel.GetHostName();
-      Assert.DoesNotContain("local", host);
+      Assert.DoesNotContain("locals", host);
     }
 
     [Fact]

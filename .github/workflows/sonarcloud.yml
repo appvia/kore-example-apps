@@ -18,7 +18,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet tool install --global dotnet-sonarscanner --version 5.0.4
-          dotnet sonarscanner begin \
+          dotnet-sonarscanner begin \
             /k:"appvia_kore-example-apps" \
             /o:"appvia" \
             /d:sonar.host.url="https://sonarcloud.io" \
@@ -26,4 +26,4 @@ jobs:
             /d:sonar.cs.opencover.reportsPaths="results/*/coverage.cobertura.xml"
           dotnet build dotnet-hello-world
           dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results
-          dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+          dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
