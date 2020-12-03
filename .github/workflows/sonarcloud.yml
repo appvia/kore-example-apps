@@ -23,8 +23,7 @@ jobs:
             /o:"appvia" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.login="$SONAR_TOKEN" \
-            /d:sonar.sources="dotnet-hello-world" \
-            /d:sonar.tests="dotnet-hello-world/tests"
+            /d:sonar.cs.opencover.reportsPaths="results/*/coverage.cobertura.xml"
           dotnet build dotnet-hello-world
           dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results
           dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
