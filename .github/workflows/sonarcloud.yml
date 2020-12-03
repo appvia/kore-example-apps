@@ -25,5 +25,6 @@ jobs:
             /d:sonar.login="$SONAR_TOKEN" \
             /d:sonar.sources="dotnet-hello-world" \
             /d:sonar.tests="dotnet-hello-world/tests"
-          dotnet build dotnet-hello-world --output out
+          dotnet build dotnet-hello-world
+          dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results
           dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
