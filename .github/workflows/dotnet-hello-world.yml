@@ -27,7 +27,8 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/appvia/kore-example-apps:${{ github.sha }} -f dotnet-hello-world/Dockerfile .
+          docker build -t docker.io/appvia/kore-example-apps:${{ github.sha }} .
+        working-directory: dotnet-hello-world
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
