@@ -17,13 +17,38 @@ jobs:
       - name: Get branch name
         if: github.event_name != 'pull_request'
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
       - name: Get branch name on pull request
         if: github.event_name == 'pull_request'
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF#refs/heads/})" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t docker.io/appvia/kore-example-apps:${{ github.sha }} .
+        working-directory: dotnet-hello-world
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/appvia/kore-example-apps:${{ github.sha }}'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'MEDIUM,CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
+
       - name: Download Kore CLI
         run: |
           sudo curl https://storage.googleapis.com/kore-releases/v0.4.0-beta9/kore-cli-linux-amd64 -o /usr/local/bin/kore
           sudo chmod +x /usr/local/bin/kore
+
       - name: Trigger Kore build and push
         env:
           KORE_SERVER: ${{ secrets.KORE_SERVER }}
@@ -32,16 +57,17 @@ jobs:
         run: |
           echo "Running build from $BRANCH_NAME branch"
           kore run build dotnet-hello-world -t "$KORE_TEAM" -b "$BRANCH_NAME" --tag ${{ github.sha }}
+
       - name: Get Certificate Authority for Helm to trust the Kubernetes API server
         run: |
           echo "$CA_CERT" > /tmp/ca
           echo "SSL_CERT_FILE=/tmp/ca" >> $GITHUB_ENV
         env:
           CA_CERT: ${{secrets.CA_CERT}}
-      - name: Checkout helm chart
-        uses: actions/checkout@v2
+
       - name: Install stable version of Helm
         uses: azure/setup-helm@v1
+
       - name: Create Helm release
         env:
           HELM_KUBEAPISERVER: ${{ secrets.HELM_KUBEAPISERVER }}
