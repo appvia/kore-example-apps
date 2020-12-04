@@ -24,7 +24,7 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.login="$SONAR_TOKEN" \
             /d:sonar.verbose="true" \
-            /d:sonar.cs.opencover.reportsPaths="results/*/coverage.cobertura.xml"
+            /d:sonar.cs.opencover.reportsPaths="results/*/coverage.opencover.xml"
           dotnet build dotnet-hello-world
           dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
           dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
