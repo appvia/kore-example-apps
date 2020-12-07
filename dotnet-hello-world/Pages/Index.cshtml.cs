@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +18,24 @@ namespace NetCore.Docker.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public static string GetHostName()
         {
           string hostName = Dns.GetHostName();
+          return hostName;
+        }
+
+        public static string GetDotNetVersion()
+        {
           string runtime = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+          return runtime;
+        }
+
+        public void OnGet()
+        {
+          string hostName = GetHostName();
+          string dotNetVersion = GetDotNetVersion();
           ViewData["HostName"] = hostName;
-          ViewData["Runtime"] = runtime;
+          ViewData["Runtime"] = dotNetVersion;
         }
     }
 }
