@@ -1,0 +1,35 @@
+name: Unit Tests and Code Coverage
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+    - 'dotnet-hello-world/**'
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup dotnet core
+        uses: actions/setup-dotnet@v1
+      - name: Install and run dotnet-sonarscanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 5.0.4
+          dotnet-sonarscanner begin \
+            /k:"appvia_kore-example-apps" \
+            /o:"appvia" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.login="$SONAR_TOKEN" \
+            /d:sonar.verbose="true" \
+            /d:sonar.sources="dotnet-hello-world/src" \
+            /d:sonar.tests="dotnet-hello-world/tests" \
+            /d:sonar.cs.opencover.reportsPaths="results/*/coverage.opencover.xml"
+          dotnet build dotnet-hello-world/src
+          dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
