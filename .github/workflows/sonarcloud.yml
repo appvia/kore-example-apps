@@ -1,4 +1,4 @@
-name: Build
+name: Unit Tests and Code Coverage
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -24,6 +24,9 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.login="$SONAR_TOKEN" \
             /d:sonar.verbose="true" \
+            /d:sonar.sources="dotnet-hello-world" \
+            /d:sonar.tests="dotnet-hello-world/tests" \
+            /d:sonar.coverage.exclusions="**/*.cs","**/*.md" \
             /d:sonar.cs.opencover.reportsPaths="results/*/coverage.opencover.xml"
           dotnet build dotnet-hello-world
           dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
