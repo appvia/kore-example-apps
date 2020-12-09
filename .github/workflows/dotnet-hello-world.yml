@@ -37,7 +37,9 @@ jobs:
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
-          severity: 'MEDIUM,CRITICAL,HIGH'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
+          exit-code: '1'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v1
@@ -74,3 +76,32 @@ jobs:
           HELM_KUBETOKEN: ${{ secrets.HELM_KUBETOKEN }}
           HELM_NAMESPACE: ${{ secrets.HELM_NAMESPACE }}
         run: helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.tag=${{ github.sha }}
+
+  static_code_analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup dotnet core
+        uses: actions/setup-dotnet@v1
+
+      - name: Run Unit Tests and Code Coverage
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 5.0.4
+          dotnet-sonarscanner begin \
+            /k:"appvia_kore-example-apps" \
+            /o:"appvia" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.login="$SONAR_TOKEN" \
+            /d:sonar.verbose="true" \
+            /d:sonar.sources="dotnet-hello-world/src" \
+            /d:sonar.tests="dotnet-hello-world/tests" \
+            /d:sonar.cs.opencover.reportsPaths="results/*/coverage.opencover.xml"
+          dotnet build dotnet-hello-world/src
+          dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
