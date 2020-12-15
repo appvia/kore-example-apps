@@ -12,10 +12,15 @@ phases:
   install:
     runtime-versions:
       dotnet: "$DOTNET_VERSION"
-      commands:
-        - curl https://storage.googleapis.com/kore-releases/v$KORE_VERSION/kore-cli-linux-amd64 -o /usr/local/bin/kore && chmod +x /usr/local/bin/kore
-        - mkdir trivy && curl -L https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
-        - mkdir helm && curl -L https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf helm
-        - kore version
-        - helm version
-        - trivy --version
+    commands:
+      - curl -sS https://storage.googleapis.com/kore-releases/v$KORE_VERSION/kore-cli-linux-amd64 -o /usr/local/bin/kore && chmod +x /usr/local/bin/kore
+      - mkdir trivy && curl -sSL https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
+      - mkdir helm && curl -sSL https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf helm
+
+  build:
+    commands:
+      - docker build -t docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION dotnet-hello-world
+
+  post_build:
+    commands:
+      - trivy --no-progress --exit-code 1 --severity CRITICAL docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION
