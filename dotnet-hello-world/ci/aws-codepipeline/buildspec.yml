@@ -10,8 +10,6 @@ env:
 
 phases:
   install:
-    runtime-versions:
-      dotnet: "$DOTNET_VERSION"
     commands:
       - curl -sS https://storage.googleapis.com/kore-releases/v$KORE_VERSION/kore-cli-linux-amd64 -o /usr/local/bin/kore && chmod +x /usr/local/bin/kore
       - mkdir trivy && curl -sSL https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
@@ -23,4 +21,4 @@ phases:
 
   post_build:
     commands:
-      - trivy --no-progress --exit-code 1 --severity CRITICAL docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - "AWS_REGION=$AWS_REGION AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | awk -F: '{print $5}') trivy image --format template --template "@contrib/asff.tpl" -o report.asff docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION"
