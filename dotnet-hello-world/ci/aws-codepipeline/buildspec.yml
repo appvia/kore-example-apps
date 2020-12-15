@@ -1,0 +1,22 @@
+---
+version: 0.2
+
+env:
+  variables:
+    DOTNET_VERSION: '3.1'
+    KORE_VERSION: '0.4.0-beta9'
+    TRIVY_VERSION: '0.14.0'
+    HELM_VERSION: '3.4.2'
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: "$DOTNET_VERSION"
+      commands:
+        - ls -l
+        - curl https://storage.googleapis.com/kore-releases/v$KORE_VERSION/kore-cli-linux-amd64 -o /usr/local/bin/kore && chmod +x /usr/local/bin/kore
+        - mkdir trivy && curl -L https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
+        - mkdir helm && curl -L https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf helm
+        - kore version
+        - helm version
+        - trivy --version
