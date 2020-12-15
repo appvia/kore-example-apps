@@ -21,4 +21,4 @@ phases:
 
   post_build:
     commands:
-      - "AWS_REGION=$AWS_REGION AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | awk -F: '{print $5}') trivy image --format template --template "@contrib/asff.tpl" -o report.asff docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - trivy --no-progress --exit-code 1 --severity CRITICAL docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION
