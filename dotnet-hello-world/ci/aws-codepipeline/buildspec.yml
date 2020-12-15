@@ -21,4 +21,5 @@ phases:
 
   post_build:
     commands:
-      - "AWS_REGION=$AWS_REGION AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | awk -F: '{print $5}') trivy image --format template --template \"@contrib/asff.tpl\" -o report.asff docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - "AWS_REGION=$AWS_REGION AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | awk -F: '{print $5}') trivy image --format template --template \"@dotnet-hello-world/ci/aws-codepipeline/asff.tpl\" -o report.asff docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - aws securityhub batch-import-findings --findings file://report.asff
