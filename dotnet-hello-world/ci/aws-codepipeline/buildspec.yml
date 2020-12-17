@@ -6,7 +6,6 @@ env:
     KORE_VERSION: '0.4.0-beta9'
     TRIVY_VERSION: '0.14.0'
     HELM_VERSION: '3.4.2'
-    SSL_CERT_FILE: '/tmp/ca'
   parameter-store:
     KORE_SERVER: "KORE_SERVER"
     KORE_TEAM: "KORE_TEAM"
@@ -14,7 +13,6 @@ env:
     HELM_KUBEAPISERVER: "HELM_KUBEAPISERVER"
     HELM_KUBETOKEN: "HELM_KUBETOKEN"
     HELM_NAMESPACE: "HELM_NAMESPACE"
-    TEAM_E_EKS_CLUSTER_CA: "TEAM_E_EKS_CLUSTER_CA"
 
 phases:
   install:
@@ -22,7 +20,7 @@ phases:
       - curl -sS https://storage.googleapis.com/kore-releases/v$KORE_VERSION/kore-cli-linux-amd64 -o /usr/local/bin/kore && chmod +x /usr/local/bin/kore
       - mkdir trivy && curl -sSL https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
       - mkdir helm && curl -sSL https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf helm
-      - echo $TEAM_E_EKS_CLUSTER_CA > /tmp/ca
+      - aws eks update-kubeconfig --name $KORE_TEAM-eks-development --kubeconfig ./kubeconfig --region $AWS_REGION
 
   build:
     commands:
@@ -33,4 +31,4 @@ phases:
       - "AWS_REGION=$AWS_REGION AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | awk -F: '{print $5}') trivy image --format template --template \"@dotnet-hello-world/ci/aws-codepipeline/asff.tpl\" -o report.asff docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION"
       - aws securityhub batch-import-findings --findings file://report.asff
       - kore run build dotnet-hello-world -t $KORE_TEAM -b $CODEBUILD_SOURCE_VERSION --tag $CODEBUILD_RESOLVED_SOURCE_VERSION
-      - helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.tag=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.tag=$CODEBUILD_RESOLVED_SOURCE_VERSION --kubeconfig ./kubeconfig
