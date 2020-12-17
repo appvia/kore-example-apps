@@ -17,7 +17,7 @@ namespace NetCore.Docker.Pages.UnitTests
     public void IsDotNetOnLTSVersion()
     {
       var version = IndexModel.GetDotNetVersion();
-      Assert.Contains("3.1.10", version);
+      Assert.Contains("3.1", version);
     }
   }
 }
