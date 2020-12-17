@@ -11,10 +11,11 @@ phases:
   install:
     runtime-versions:
       dotnet: "$DOTNET_VERSION"
-      
+
   build:
     commands:
       - |
+        dotnet tool install --global dotnet-sonarscanner --version 5.0.4
         dotnet-sonarscanner begin \
           /k:"appvia_kore-example-apps" \
           /o:"appvia" \
