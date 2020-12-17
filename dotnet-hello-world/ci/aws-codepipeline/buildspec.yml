@@ -25,7 +25,7 @@ phases:
   build:
     commands:
       # - docker build -t docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION dotnet-hello-world
-      - BRANCH_NAME=$(echo $CODEBUILD_SOURCE_VERSION | awk -F/ '{print $3}') kore run build dotnet-hello-world -t $KORE_TEAM -b $CODEBUILD_SOURCE_VERSION --tag $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - BRANCH_NAME=$(echo $CODEBUILD_SOURCE_VERSION | awk -F/ '{print $3}') kore run build dotnet-hello-world -t $KORE_TEAM -b $BRANCH_NAME --tag $CODEBUILD_RESOLVED_SOURCE_VERSION
 
   post_build:
     commands:
