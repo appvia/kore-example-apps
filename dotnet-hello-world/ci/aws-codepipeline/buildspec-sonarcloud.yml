@@ -1,0 +1,28 @@
+---
+version: 0.2
+
+env:
+  variables:
+    DOTNET_VERSION: '3.1'
+  parameter-store:
+    SONAR_TOKEN: "SONAR_TOKEN"
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: "$DOTNET_VERSION"
+      
+  build:
+    commands:
+      - |
+        dotnet-sonarscanner begin \
+          /k:"appvia_kore-example-apps" \
+          /o:"appvia" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.login="$SONAR_TOKEN" \
+          /d:sonar.sources="dotnet-hello-world/src" \
+          /d:sonar.tests="dotnet-hello-world/tests" \
+          /d:sonar.cs.opencover.reportsPaths="results/*/coverage.opencover.xml"
+        dotnet build dotnet-hello-world/src
+        dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
