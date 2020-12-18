@@ -24,11 +24,11 @@ phases:
 
   build:
     commands:
-      # - docker build -t docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION dotnet-hello-world
-      - "export BRANCH_NAME=$(echo $CODEBUILD_SOURCE_VERSION | awk -F/ '{print $3}') && kore run build dotnet-hello-world -t $KORE_TEAM -b $BRANCH_NAME --tag $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - docker build -t docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION dotnet-hello-world
 
   post_build:
     commands:
       # - "AWS_REGION=$AWS_REGION AWS_ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | awk -F: '{print $5}') trivy image --format template --template \"@dotnet-hello-world/ci/aws-codepipeline/asff.tpl\" -o report.asff docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION"
       # - aws securityhub batch-import-findings --findings file://report.asff --region $AWS_REGION
+      - "export BRANCH_NAME=$(echo $CODEBUILD_SOURCE_VERSION | awk -F/ '{print $3}') && kore run build dotnet-hello-world -t $KORE_TEAM -b $BRANCH_NAME --tag $CODEBUILD_RESOLVED_SOURCE_VERSION"
       - helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.tag=$CODEBUILD_RESOLVED_SOURCE_VERSION --kubeconfig ./kubeconfig
