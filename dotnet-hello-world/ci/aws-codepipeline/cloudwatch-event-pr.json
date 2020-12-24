@@ -1,0 +1,16 @@
+{
+  "source": [
+    "aws.codecommit"
+  ],
+  "detail-type": [
+    "CodeCommit Pull Request State Change"
+  ],
+  "resources": [
+    "arn:aws:codecommit:eu-west-2:149353100611:kore-example-apps"
+  ],
+  "detail": {
+    "destinationReference": [
+      "refs/heads/main"
+    ]
+  }
+}
