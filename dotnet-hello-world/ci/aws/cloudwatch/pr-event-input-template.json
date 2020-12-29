@@ -1,0 +1,10 @@
+{
+  "sourceVersion": <sourceVersion>,
+  "environmentVariablesOverride": [
+      {
+         "name": "SOURCE_REFERENCE",
+         "type": "PLAINTEXT",
+         "value": <sourceReference>
+      }
+   ]
+}

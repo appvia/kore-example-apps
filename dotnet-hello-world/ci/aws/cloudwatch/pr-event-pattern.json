@@ -11,6 +11,10 @@
   "detail": {
     "destinationReference": [
       "refs/heads/main"
+    ],
+    "event": [
+      "pullRequestCreated",
+      "pullRequestSourceBranchUpdated"
     ]
   }
 }
