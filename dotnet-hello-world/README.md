@@ -37,7 +37,7 @@ kubectl port-forward service/dotnet-hello-world 8080 8080 -n ${NAMESPACE}
 
 Create a secret with the username and password that give access to the Git repository:
 ```
-kubectl create secret generic git-https-credentials \
+kubectl -n ${NAMESPACE} create secret generic git-https-credentials \
     --from-literal=username=<username> \
     --from-literal=password=<password>
 ```
