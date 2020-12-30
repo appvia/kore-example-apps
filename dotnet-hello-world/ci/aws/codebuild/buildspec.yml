@@ -6,28 +6,29 @@ env:
     KORE_VERSION: '0.4.0-beta9'
     TRIVY_VERSION: '0.14.0'
     HELM_VERSION: '3.4.2'
+    IMAGE_REPO_NAME: 'appvia/dotnet-hello-world-cc'
   parameter-store:
-    KORE_SERVER: "KORE_SERVER"
-    KORE_TEAM: "KORE_TEAM"
-    KORE_TOKEN: "KORE_TOKEN"
     HELM_KUBEAPISERVER: "HELM_KUBEAPISERVER"
     HELM_KUBETOKEN: "HELM_KUBETOKEN"
     HELM_NAMESPACE: "HELM_NAMESPACE"
+    TEAM_E_EKS_CLUSTER_CA: "TEAM_E_EKS_CLUSTER_CA"
 
 phases:
   install:
     commands:
-      - curl -sS https://storage.googleapis.com/kore-releases/v$KORE_VERSION/kore-cli-linux-amd64 -o /usr/local/bin/kore && chmod +x /usr/local/bin/kore
       - mkdir trivy && curl -sSL https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
-      - mkdir helm && curl -sSL https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf helm
-      - aws eks update-kubeconfig --name $KORE_TEAM-eks-development --kubeconfig ./kubeconfig --region $AWS_REGION
+      - mkdir helm && curl -sSL https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/helm && rm -rf helm
+      - echo $TEAM_E_EKS_CLUSTER_CA > /etc/pki/ca-trust/source/anchors/team-e-ca.crt && update-ca-trust extract
+  pre_build:
+    commands:
+      - "AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text) && aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 
   build:
     commands:
-      - docker build -t docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION dotnet-hello-world
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION dotnet-hello-world
 
   post_build:
     commands:
-      - trivy image --severity CRITICAL --exit-code 1 --no-progress docker.io/appvia/kore-example-apps:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - "export BRANCH_NAME=$(echo $SOURCE_REFERENCE | awk -F/ '{print $3}') && kore run build dotnet-hello-world -t $KORE_TEAM --branch $BRANCH_NAME --ref $CODEBUILD_RESOLVED_SOURCE_VERSION --tag $CODEBUILD_RESOLVED_SOURCE_VERSION"
-      - helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.tag=$CODEBUILD_RESOLVED_SOURCE_VERSION --kubeconfig ./kubeconfig
+      - trivy image --severity CRITICAL --exit-code 1 --no-progress $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.tag=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
