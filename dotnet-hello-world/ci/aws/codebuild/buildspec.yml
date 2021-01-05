@@ -11,14 +11,14 @@ env:
     HELM_KUBEAPISERVER: "HELM_KUBEAPISERVER"
     HELM_KUBETOKEN: "HELM_KUBETOKEN"
     HELM_NAMESPACE: "HELM_NAMESPACE"
-    TEAM_E_EKS_CLUSTER_CA: "TEAM_E_EKS_CLUSTER_CA"
+    EKS_CLUSTER_CA: "EKS_CLUSTER_CA"
 
 phases:
   install:
     commands:
       - mkdir trivy && curl -sSL https://github.com/aquasecurity/trivy/releases/download/v$TRIVY_VERSION/trivy_"$TRIVY_VERSION"_Linux-64bit.tar.gz | tar -xz -C trivy/ && mv trivy/trivy /usr/local/bin/ && chmod +x /usr/local/bin/trivy && rm -rf trivy
       - mkdir helm && curl -sSL https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz | tar -xz -C helm/ && mv helm/linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/helm && rm -rf helm
-      - echo $TEAM_E_EKS_CLUSTER_CA > /etc/pki/ca-trust/source/anchors/team-e-ca.crt && update-ca-trust extract
+      - echo $EKS_CLUSTER_CA > /etc/pki/ca-trust/source/anchors/team-e-ca.crt && update-ca-trust extract
   pre_build:
     commands:
       - "AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text) && aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
