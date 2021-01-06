@@ -1,4 +1,0 @@
-{
-  "sourceVersion": "$.detail.sourceCommit",
-  "sourceReference": "$.detail.sourceReference"
-}
