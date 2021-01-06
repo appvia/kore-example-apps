@@ -148,6 +148,41 @@ aws events put-targets \
 
 #### Create Kubernetes service account for CI/CD
 
+This section assumes that you have used **Kore Operate** to self serve Kubernetes cluster for your team. If not, then you can create one with a tool of your choice.
+
+1. Create a Kubernetes namespace with the `kore` CLI.
+```bash
+kore -t <TEAM> create namespace <NAMESPACE>
+```
+
+1. Log in to the Kore-managed Kubernetes clusters and set the Kubernetes configuration.
+```bash
+kore profile configure <KORE_API_URL>
+kore login
+kore kubeconfig -t <TEAM>
+```
+
+1. Create Service Account with administrator privileges scoped to a Kubernetes namespace.
+```bash
+kubectl -n <NAMESPACE> create serviceaccount <SERVICE_ACCOUNT>
+kubectl -n <NAMESPACE> create rolebinding <ROLE_BINDING> --clusterrole=kore-nsadmin --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
+```
+
+1. Get the Service account token
+```bash
+kubectl get secret -n <NAMESPACE> $(kubectl -n <NAMESPACE> get serviceaccount <SERVICE_ACCOUNT> -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
+```
+
+#### Create Parameters in Systems Manager Parameter store
+
+Add the following as parameters of type `SecureString` in Systems Manager Parameter Store.
+```
+HELM_KUBEAPISERVER # The Kubernetes API Server URL
+HELM_KUBETOKEN     # The Kubernetes Service Account token
+HELM_NAMESPACE     # The Kubernetes namespace
+EKS_CLUSTER_CA     # The Kubernetes cluster certificate authority (Only applies to AWS EKS)
+```
+
 #### Create SonarCloud project
 <!-- A SonarCloud token with access to a new or existing SonarCloud project -->
 
