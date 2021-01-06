@@ -40,12 +40,12 @@ region=eu-west-2
 aws codecommit create-repository --repository-name kore-example-apps
 ```
 
-1. Install the [git-remote-codecommit](https://pypi.org/project/git-remote-codecommit/) utility on your local computer to provide a simple method for pushing and pulling code from CodeCommit repositories. It extends Git by enabling the use of AWS temporary credentials.
+2. Install the [git-remote-codecommit](https://pypi.org/project/git-remote-codecommit/) utility on your local computer to provide a simple method for pushing and pulling code from CodeCommit repositories. It extends Git by enabling the use of AWS temporary credentials.
 ```bash
 pip install git-remote-codecommit
 ```
 
-2. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
+3. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
 ```bash
 git clone https://github.com/appvia/kore-example-apps.git
 cd kore-apps && rm -rf .github .git
