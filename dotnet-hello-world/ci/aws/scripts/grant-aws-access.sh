@@ -43,10 +43,10 @@ create_role() {
 create_iam_policy() {
   if ! aws iam get-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${NAME}-policy" >/dev/null 2>&1; then
     info "Creating IAM policy ${NAME}-policy"
-    aws iam create-policy --policy-name ${NAME}-policy --policy-document file://iam-role-policy.json
+    aws iam create-policy --policy-name ${NAME}-policy --policy-document file://config/iam-role-policy.json
   else
     info "Updating IAM policy ${NAME}-policy"
-    aws iam create-policy-version --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${NAME}-policy" --policy-document file://iam-role-policy.json --set-as-default
+    aws iam create-policy-version --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${NAME}-policy" --policy-document file://config/iam-role-policy.json --set-as-default
   fi
 }
 

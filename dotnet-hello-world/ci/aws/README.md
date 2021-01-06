@@ -4,15 +4,14 @@ This repository demonstrates the use of AWS services and Helm to achieve a simpl
 
 The CI workflow is triggered when a developer creates or merges an AWS CodeCommit pull request. This ensures that the code changes run through security and quality gates to provide a peer reviewer with the confidence and assurance to merge a pull request.
 
-For demonstration purposes, code changes in a pull request or code changes merged into the `master` branch are eventually deployed in the same environment. However this can be customised according to your team's/organisation's branching and deployment strategy to extend to either perform a continuous delivery or continuous deployment to a Production environment.
+For demonstration purposes, code changes in a `pull request` or code changes merged into the `master` branch are eventually deployed in the same environment. However this can be customised according to your team's/organisation's branching and deployment strategy to extend to either perform a continuous delivery or continuous deployment to a Production environment.
 
 ## Prerequisites
 
 The following scripts must be executed by an **AWS administrator** to ensure that a developer is granted least privileged permissions to complete the setup.
 
 ```bash
-cd scripts
-./grant-aws-access.sh -u <USER_NAME>
+./scripts/grant-aws-access.sh -u <USER_NAME>
 ```
 
 Once an **AWS administrator** has successfully executed the above scripts, you must update your local AWS configuration to obtain the required permissions.
@@ -56,38 +55,40 @@ git add . && git commit -m "initial commit" && git push -u origin master
 
 #### Create CodeBuild build specifications
 
-1. Create a build specification to instruct CodeBuild how to build, scan for vulnerabilities, package and deploy the .net core web application - see [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/codebuild/buildspec.yml)
+1. Create a build specification to instruct CodeBuild how to build, scan for vulnerabilities, package and deploy the .net core web application - see [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml)
 
-1. Create another build specification to instruct Codebuild how to perform static code analysis and push the report to SonarCloud - see [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/codebuild/buildspec-sonarcloud.yml)
+1. Create another build specification to instruct Codebuild how to perform static code analysis and push the report to SonarCloud - see [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml)
 
 #### Create CodeBuild projects
 
 1. Create an IAM role that enables CodeBuild to interact with dependent AWS services on behalf of the AWS account.  
 ```bash
 aws iam create-role --profile appvia-workshop-user --role-name CodeBuildServiceRole --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"codebuild.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
-aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole --policy-name CodeBuildServiceRolePolicy --policy-document file://iam-codebuild-role-policy.json
+aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole --policy-name CodeBuildServiceRolePolicy --policy-document file://config/iam-codebuild-role-policy.json
 ```
 
-1. Create a build project that references the CodeCommit repository and the [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/codebuild/buildspec.yml).
+1. Create a build project that references the CodeCommit repository and the [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml).
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
+CODEBUILD_PROJECT="dotnet-hello-world-build-deploy"
 aws codebuild create-project \
  --profile appvia-workshop-user \
- --name dotnet-hello-world-build-deploy \
- --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/codebuild/buildspec.yml\"}" \
+ --name ${CODEBUILD_PROJECT} \
+ --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec.yml\"}" \
  --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
  --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
  --source-version "refs/heads/master"
 ```
 
-1. Create a build project that references the CodeCommit repository and the [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/codebuild/buildspec-sonarcloud.yml).
+1. Create a build project that references the CodeCommit repository and the [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml).
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
+CODEBUILD_PROJECT="dotnet-hello-world-code-coverage"
 aws codebuild create-project \
  --profile appvia-workshop-user \
- --name dotnet-hello-world-code-coverage-more \
- --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/codebuild/buildspec-sonarcloud.yml\"}" \
+ --name ${CODEBUILD_PROJECT} \
+ --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml\"}" \
  --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
  --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
@@ -99,22 +100,51 @@ aws codebuild create-project \
 1. Create an IAM role that enables CloudWatch to start builds for the CodeBuild projects.
 ```bash
 aws iam create-role --profile appvia-workshop-user --role-name CloudWatchServiceRole --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
-aws iam put-role-policy --profile appvia-workshop-user --role-name CloudWatchServiceRole --policy-name CloudWatchServiceRolePolicy --policy-document file://iam-cloudwatch-role-policy.json
+aws iam put-role-policy --profile appvia-workshop-user --role-name CloudWatchServiceRole --policy-name CloudWatchServiceRolePolicy --policy-document file://config/iam-cloudwatch-role-policy.json
 ```
 
 1. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is created and/or updated.
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
+AWS_REGION="eu-west-2"
+CODECOMMIT_REPOSITORY="kore-example-apps"
+CLOUDWATCH_RULE="trigger-ci-workflow-on-pr"
+```
+```bash
 aws events put-rule \
  --profile appvia-workshop-user \
- --name trigger-ci-workflow-on-pr \
- --event-pattern file://../cloudwatch/pr-event-pattern.json \
- --role-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CloudWatchServiceRole"
+ --name ${CLOUDWATCH_RULE} \
+ --description "Continuous integration workflow triggered by CodeCommit Pull Request" \
+ --event-pattern "{\"source\":[\"aws.codecommit\"],\"detail-type\":[\"CodeCommit Pull Request State Change\"],\"resources\":[\"arn:aws:codecommit:${AWS_REGION}:${AWS_ACCOUNT_ID}:${CODECOMMIT_REPOSITORY}\"],\"detail\":{\"destinationReference\":[\"refs/heads/master\"],\"event\":[\"pullRequestCreated\",\"pullRequestSourceBranchUpdated\"]}}"
+```
+```bash
+aws events put-targets \
+ --profile appvia-workshop-user \
+ --rule ${CLOUDWATCH_RULE} \
+ --targets '[{"Id": "1", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-build-deploy", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole", "InputTransformer": {"InputPathsMap": {"sourceVersion": "$.detail.sourceCommit"}, "InputTemplate": "{\"sourceVersion\": <sourceVersion>}"}}, {"Id": "2", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-code-coverage", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole", "InputTransformer": {"InputPathsMap": {"sourceVersion": "$.detail.sourceCommit"}, "InputTemplate": "{\"sourceVersion\": <sourceVersion>}"}}]'
 ```
 
-1. Create a CloudWatch rule that triggers a deployment workflow when a CodeCommit pull request is merged into the `master` branch.
-
-
+1. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is merged into the `master` branch.
+```bash
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
+AWS_REGION="eu-west-2"
+CODECOMMIT_REPOSITORY="kore-example-apps"
+CLOUDWATCH_RULE="trigger-ci-workflow-on-pr-merged"
+CODEBUILD_PROJECT="dotnet-hello-world-code-coverage"
+```
+```bash
+aws events put-rule \
+ --profile appvia-workshop-user \
+ --name ${CLOUDWATCH_RULE} \
+ --description "Continuous integration workflow triggered by CodeCommit Pull Request merged" \
+ --event-pattern "{\"source\":[\"aws.codecommit\"],\"detail-type\":[\"CodeCommit Pull Request State Change\"],\"resources\":[\"arn:aws:codecommit:${AWS_REGION}:${AWS_ACCOUNT_ID}:${CODECOMMIT_REPOSITORY}\"],\"detail\":{\"destinationReference\":[\"refs/heads/master\"],\"event\":[\"pullRequestMergeStatusUpdated\"]}}"
+```
+```bash
+aws events put-targets \
+ --profile appvia-workshop-user \
+ --rule ${CLOUDWATCH_RULE} \
+ --targets '[{"Id": "1", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-build-deploy", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole"}, {"Id": "2", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-code-coverage", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole"}]'
+```
 
 #### Create Kubernetes service account for CI/CD
 
@@ -122,5 +152,4 @@ aws events put-rule \
 <!-- A SonarCloud token with access to a new or existing SonarCloud project -->
 
 ## Triggering the CI pipeline
-![AWS CodePipeline CI Pipeline](../../images/aws-codebuild-ci.png)
-https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-git-remote-codecommit.html
+<!-- ![AWS CodePipeline CI Pipeline](../../images/aws-codebuild-ci.png) -->

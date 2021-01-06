@@ -10,7 +10,8 @@
               "iam:PassRole",
               "iam:PutRolePolicy",
               "codebuild:CreateProject",
-              "events:PutRule"
+              "events:PutRule",
+              "events:PutTargets"
             ],
             "Resource": "*"
         }
