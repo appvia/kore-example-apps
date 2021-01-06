@@ -45,7 +45,7 @@ aws codecommit create-repository --repository-name kore-example-apps
 pip install git-remote-codecommit
 ```
 
-1. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
+2. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
 ```bash
 git clone https://github.com/appvia/kore-example-apps.git
 cd kore-apps && rm -rf .github .git
@@ -57,7 +57,7 @@ git add . && git commit -m "initial commit" && git push -u origin master
 
 1. Create a build specification to instruct CodeBuild how to build, scan for vulnerabilities, package and deploy the .net core web application - see [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml)
 
-1. Create another build specification to instruct Codebuild how to perform static code analysis and push the report to SonarCloud - see [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml)
+2. Create another build specification to instruct Codebuild how to perform static code analysis and push the report to SonarCloud - see [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml)
 
 #### Create CodeBuild projects
 
@@ -67,7 +67,7 @@ aws iam create-role --profile appvia-workshop-user --role-name CodeBuildServiceR
 aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole --policy-name CodeBuildServiceRolePolicy --policy-document file://config/iam-codebuild-role-policy.json
 ```
 
-1. Create a build project that references the CodeCommit repository and the [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml).
+2. Create a build project that references the CodeCommit repository and the [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml).
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 CODEBUILD_PROJECT="dotnet-hello-world-build-deploy"
@@ -81,7 +81,7 @@ aws codebuild create-project \
  --source-version "refs/heads/master"
 ```
 
-1. Create a build project that references the CodeCommit repository and the [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml).
+3. Create a build project that references the CodeCommit repository and the [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml).
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 CODEBUILD_PROJECT="dotnet-hello-world-code-coverage"
@@ -103,7 +103,7 @@ aws iam create-role --profile appvia-workshop-user --role-name CloudWatchService
 aws iam put-role-policy --profile appvia-workshop-user --role-name CloudWatchServiceRole --policy-name CloudWatchServiceRolePolicy --policy-document file://config/iam-cloudwatch-role-policy.json
 ```
 
-1. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is created and/or updated.
+2. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is created and/or updated.
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 AWS_REGION="eu-west-2"
@@ -124,7 +124,7 @@ aws events put-targets \
  --targets '[{"Id": "1", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-build-deploy", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole", "InputTransformer": {"InputPathsMap": {"sourceVersion": "$.detail.sourceCommit"}, "InputTemplate": "{\"sourceVersion\": <sourceVersion>}"}}, {"Id": "2", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-code-coverage", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole", "InputTransformer": {"InputPathsMap": {"sourceVersion": "$.detail.sourceCommit"}, "InputTemplate": "{\"sourceVersion\": <sourceVersion>}"}}]'
 ```
 
-1. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is merged into the `master` branch.
+3. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is merged into the `master` branch.
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 AWS_REGION="eu-west-2"
@@ -155,20 +155,20 @@ This section assumes that you have used **Kore Operate** to self serve Kubernete
 kore -t <TEAM> create namespace <NAMESPACE>
 ```
 
-1. Log in to the Kore-managed Kubernetes clusters and set the Kubernetes configuration.
+2. Log in to the Kore-managed Kubernetes clusters and set the Kubernetes configuration.
 ```bash
 kore profile configure <KORE_API_URL>
 kore login
 kore kubeconfig -t <TEAM>
 ```
 
-1. Create a Kubernetes service account with administrator privileges scoped to a Kubernetes namespace.
+3. Create a Kubernetes service account with administrator privileges scoped to a Kubernetes namespace.
 ```bash
 kubectl -n <NAMESPACE> create serviceaccount <SERVICE_ACCOUNT>
 kubectl -n <NAMESPACE> create rolebinding <ROLE_BINDING> --clusterrole=kore-nsadmin --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
 ```
 
-1. Get the Service account token
+4. Get the Service account token
 ```bash
 kubectl get secret -n <NAMESPACE> $(kubectl -n <NAMESPACE> get serviceaccount <SERVICE_ACCOUNT> -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
 ```
