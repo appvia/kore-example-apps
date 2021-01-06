@@ -146,7 +146,7 @@ aws events put-targets \
  --targets '[{"Id": "1", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-build-deploy", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole"}, {"Id": "2", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-code-coverage", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole"}]'
 ```
 
-#### Create Kubernetes service account for CI/CD
+#### Create Kubernetes service account
 
 This section assumes that you have used **Kore Operate** to self serve Kubernetes cluster for your team. If not, then you can create one with a tool of your choice.
 
@@ -162,7 +162,7 @@ kore login
 kore kubeconfig -t <TEAM>
 ```
 
-1. Create Service Account with administrator privileges scoped to a Kubernetes namespace.
+1. Create a Kubernetes service account with administrator privileges scoped to a Kubernetes namespace.
 ```bash
 kubectl -n <NAMESPACE> create serviceaccount <SERVICE_ACCOUNT>
 kubectl -n <NAMESPACE> create rolebinding <ROLE_BINDING> --clusterrole=kore-nsadmin --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
@@ -173,6 +173,9 @@ kubectl -n <NAMESPACE> create rolebinding <ROLE_BINDING> --clusterrole=kore-nsad
 kubectl get secret -n <NAMESPACE> $(kubectl -n <NAMESPACE> get serviceaccount <SERVICE_ACCOUNT> -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
 ```
 
+#### Create SonarCloud account
+Create an account on [SonarCloud](https://sonarcloud.io) and [generate a token](https://sonarcloud.io/account/security/) to access a SonarCloud project.
+
 #### Create Parameters in Systems Manager Parameter store
 
 Add the following as parameters of type `SecureString` in Systems Manager Parameter Store.
@@ -181,10 +184,8 @@ HELM_KUBEAPISERVER # The Kubernetes API Server URL
 HELM_KUBETOKEN     # The Kubernetes Service Account token
 HELM_NAMESPACE     # The Kubernetes namespace
 EKS_CLUSTER_CA     # The Kubernetes cluster certificate authority (Only applies to AWS EKS)
+SONAR_TOKEN        # The SonarCloud token
 ```
 
-#### Create SonarCloud project
-<!-- A SonarCloud token with access to a new or existing SonarCloud project -->
-
 ## Triggering the CI pipeline
-<!-- ![AWS CodePipeline CI Pipeline](../../images/aws-codebuild-ci.png) -->
+![AWS CodePipeline CI Pipeline](../../images/aws-codebuild-ci.png)
