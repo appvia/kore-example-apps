@@ -155,7 +155,7 @@ This section assumes that you have used **Kore Operate** to self serve Kubernete
 kore -t <TEAM> create namespace <NAMESPACE>
 ```
 
-2. Log in to the Kore-managed Kubernetes clusters and set the Kubernetes configuration.
+2. Log in to the Kore-managed Kubernetes cluster and set the Kubernetes configuration.
 ```bash
 kore profile configure <KORE_API_URL>
 kore login
@@ -188,4 +188,8 @@ SONAR_TOKEN        # The SonarCloud token
 ```
 
 ## Triggering the CI pipeline
+
+You can now start making code changes and trigger the `pull request` and `pull request merged` workflows as demonstrated in the diagram below.  
+
+
 ![AWS CodePipeline CI Pipeline](../../images/aws-codebuild-ci.png)
