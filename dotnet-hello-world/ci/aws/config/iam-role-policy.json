@@ -1,0 +1,19 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "appviaWorkshopAdminPermissions",
+            "Effect": "Allow",
+            "Action": [
+              "codecommit:*",
+              "iam:CreateRole",
+              "iam:PassRole",
+              "iam:PutRolePolicy",
+              "codebuild:CreateProject",
+              "events:PutRule",
+              "events:PutTargets"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
