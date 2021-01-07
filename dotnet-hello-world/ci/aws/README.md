@@ -53,13 +53,13 @@ git init && git remote add origin codecommit://appvia-workshop-user@kore-example
 git add . && git commit -m "initial commit" && git push -u origin master
 ```
 
-#### Create CodeBuild build specifications
+### Create CodeBuild build specifications
 
 1. Create a build specification to instruct CodeBuild how to build, scan for vulnerabilities, package and deploy the .net core web application - see [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml)
 
 2. Create another build specification to instruct Codebuild how to perform static code analysis and push the report to SonarCloud - see [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml)
 
-#### Create CodeBuild projects
+### Create CodeBuild projects
 
 1. Create an IAM role that enables CodeBuild to interact with dependent AWS services on behalf of the AWS account.  
 ```bash
@@ -95,7 +95,7 @@ aws codebuild create-project \
  --source-version "refs/heads/master"
 ```
 
-#### Create CloudWatch rule for CI
+### Create CloudWatch rule for CI
 
 1. Create an IAM role that enables CloudWatch to start builds for the CodeBuild projects.
 ```bash
@@ -146,7 +146,7 @@ aws events put-targets \
  --targets '[{"Id": "1", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-build-deploy", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole"}, {"Id": "2", "Arn": "arn:aws:codebuild:'${AWS_REGION}':'${AWS_ACCOUNT_ID}':project/dotnet-hello-world-code-coverage", "RoleArn": "arn:aws:iam::'${AWS_ACCOUNT_ID}':role/CloudWatchServiceRole"}]'
 ```
 
-#### Create Kubernetes service account
+### Create Kubernetes service account
 
 This section assumes that you have used **Kore Operate** to self serve Kubernetes cluster for your team. If not, then you can create one with a tool of your choice.
 
@@ -173,10 +173,10 @@ kubectl -n <NAMESPACE> create rolebinding <ROLE_BINDING> --clusterrole=kore-nsad
 kubectl get secret -n <NAMESPACE> $(kubectl -n <NAMESPACE> get serviceaccount <SERVICE_ACCOUNT> -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode
 ```
 
-#### Create SonarCloud account
+### Create SonarCloud account
 Create an account on [SonarCloud](https://sonarcloud.io) and [generate a token](https://sonarcloud.io/account/security/) to access a SonarCloud project.
 
-#### Create Parameters in Systems Manager Parameter store
+### Create Parameters in Systems Manager Parameter store
 
 Add the following as parameters of type `SecureString` in Systems Manager Parameter Store.
 ```
