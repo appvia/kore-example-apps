@@ -8,8 +8,9 @@ For demonstration purposes, code changes in a `pull request` or code changes mer
 
 ## Getting started
 
-### Create GitHub Actions
-Coming Soon
+### Create GitHub Actions workflow
+
+The GitHub Actions workflow has been created under `.github/workflows/dotnet-hello-world.yml`. Refer to the [Github Actions Documentation](https://docs.github.com/en/free-pro-team@latest/actions) if you wish to customise the existing workflow or create a new one.
 
 #### Create GitHub Actions Secrets
 
