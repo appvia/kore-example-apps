@@ -177,8 +177,7 @@ kubectl get secret -n <NAMESPACE> $(kubectl -n <NAMESPACE> get serviceaccount <S
 Create an account on [SonarCloud](https://sonarcloud.io) and [generate a token](https://sonarcloud.io/account/security/) to access a SonarCloud project.
 
 ### Create Parameters in Systems Manager Parameter store
-
-Add the following as parameters of type `SecureString` in Systems Manager Parameter Store.
+Add the following as parameters of type `SecureString` in Systems Manager Parameter Store by following one of the approaches detailed below.
 ```
 HELM_KUBEAPISERVER # The Kubernetes API Server URL
 HELM_KUBETOKEN     # The Kubernetes Service Account token
@@ -186,6 +185,51 @@ HELM_NAMESPACE     # The Kubernetes namespace
 EKS_CLUSTER_CA     # The Kubernetes cluster certificate authority (Only applies to AWS EKS)
 SONAR_TOKEN        # The SonarCloud token
 ```
+
+If you wish to you an AWS-managed KMS key then:
+```bash
+SSM_PARAM_NAME=""
+SSM_PARAM_DESC=""
+SSM_PARAM_VALUE=""
+
+aws --profile appvia-workshop-user ssm put-parameter --name ${SSM_PARAM_NAME} --description ${SSM_PARAM_DESC} --value ${SSM_PARAM_VALUE} --type SecureString
+```
+
+If you wish to use your own or a shared key i.e. Customer-managed KMS key then:
+```bash
+SSM_PARAM_NAME=""
+SSM_PARAM_DESC=""
+SSM_PARAM_VALUE=""
+
+CREATE_KEY=$(aws --profile appvia-workshop-user kms create-key --tags TagKey=Name,TagValue=appvia-workshop)
+KEY_ID=$(echo $CREATE_KEY | jq -r .KeyMetadata.KeyId)
+
+aws --profile appvia-workshop-user ssm put-parameter --name ${SSM_PARAM_NAME} --description ${SSM_PARAM_DESC} --value ${SSM_PARAM_VALUE} --type SecureString --key-id ${KEY_ID}
+```
+
+N.B - jq can be downloaded from [here](https://stedolan.github.io/jq/download/). If you cannot do this then, run the command without storing the response in a variable:
+```bash
+aws --profile appvia-workshop-user kms create-key --tags TagKey=Name,TagValue=appvia-workshop-yj
+{
+    "KeyMetadata": {
+        "AWSAccountId": "149353100611",
+        "KeyId": "b5cc0e73-65d7-4f47-a6e0-c9a2b3a15f79",
+        "Arn": "arn:aws:kms:eu-west-2:149353100611:key/b5cc0e73-65d7-4f47-a6e0-c9a2b3a15f79",
+        "CreationDate": "2021-02-19T13:34:25.593000+00:00",
+        "Enabled": true,
+        "Description": "",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "CUSTOMER",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+        ]
+    }
+}
+```
+
 
 ## Triggering the CI pipeline
 

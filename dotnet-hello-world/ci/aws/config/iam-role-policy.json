@@ -11,7 +11,8 @@
               "iam:PutRolePolicy",
               "codebuild:CreateProject",
               "events:PutRule",
-              "events:PutTargets"
+              "events:PutTargets",
+              "ssm:PutParameter"
             ],
             "Resource": "*"
         }
