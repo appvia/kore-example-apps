@@ -12,7 +12,9 @@
               "codebuild:CreateProject",
               "events:PutRule",
               "events:PutTargets",
-              "ssm:PutParameter"
+              "ssm:PutParameter",
+              "kms:CreateKey",
+              "kms:TagResource"
             ],
             "Resource": "*"
         }
