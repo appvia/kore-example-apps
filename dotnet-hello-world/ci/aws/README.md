@@ -37,7 +37,7 @@ region=eu-west-2
 
 1. Create a new CodeCommit repository.
 ```bash
-aws codecommit create-repository --repository-name kore-example-apps
+aws --profile appvia-workshop-user codecommit create-repository --repository-name kore-example-apps-<YOUR INITIALS>
 ```
 
 2. Install the [git-remote-codecommit](https://pypi.org/project/git-remote-codecommit/) utility on your local computer to provide a simple method for pushing and pulling code from CodeCommit repositories. It extends Git by enabling the use of AWS temporary credentials.
@@ -48,8 +48,8 @@ pip install git-remote-codecommit
 3. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
 ```bash
 git clone https://github.com/appvia/kore-example-apps.git
-cd kore-apps && rm -rf .github .git
-git init && git remote add origin codecommit://appvia-workshop-user@kore-example-apps && \
+cd kore-example-apps && rm -rf .github .git
+git init && git remote add origin codecommit://appvia-workshop-user@kore-example-apps-<YOUR INITIALS> && \
 git add . && git commit -m "initial commit" && git push -u origin master
 ```
 
@@ -63,20 +63,20 @@ git add . && git commit -m "initial commit" && git push -u origin master
 
 1. Create an IAM role that enables CodeBuild to interact with dependent AWS services on behalf of the AWS account.  
 ```bash
-aws iam create-role --profile appvia-workshop-user --role-name CodeBuildServiceRole --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"codebuild.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
-aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole --policy-name CodeBuildServiceRolePolicy --policy-document file://config/iam-codebuild-role-policy.json
+aws iam create-role --profile appvia-workshop-user --role-name CodeBuildServiceRole-<YOUR INITIALS> --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"codebuild.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
+aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole-<YOUR INITIALS> --policy-name CodeBuildServiceRolePolicy --policy-document file://config/iam-codebuild-role-policy.json
 ```
 
 2. Create a build project that references the CodeCommit repository and the [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml).
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
-CODEBUILD_PROJECT="dotnet-hello-world-build-deploy"
+CODEBUILD_PROJECT="dotnet-hello-world-build-deploy-<YOUR INITIALS>"
 aws codebuild create-project \
  --profile appvia-workshop-user \
  --name ${CODEBUILD_PROJECT} \
  --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec.yml\"}" \
  --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
- --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole" \
+ --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole-<YOUR INITIALS>" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
  --source-version "refs/heads/master"
 ```
@@ -84,13 +84,13 @@ aws codebuild create-project \
 3. Create a build project that references the CodeCommit repository and the [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml).
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
-CODEBUILD_PROJECT="dotnet-hello-world-code-coverage"
+CODEBUILD_PROJECT="dotnet-hello-world-code-coverage-<YOUR INITIALS>"
 aws codebuild create-project \
  --profile appvia-workshop-user \
  --name ${CODEBUILD_PROJECT} \
  --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml\"}" \
  --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
- --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole" \
+ --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole-<YOUR INITIALS>" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
  --source-version "refs/heads/master"
 ```
@@ -99,16 +99,16 @@ aws codebuild create-project \
 
 1. Create an IAM role that enables CloudWatch to start builds for the CodeBuild projects.
 ```bash
-aws iam create-role --profile appvia-workshop-user --role-name CloudWatchServiceRole --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
-aws iam put-role-policy --profile appvia-workshop-user --role-name CloudWatchServiceRole --policy-name CloudWatchServiceRolePolicy --policy-document file://config/iam-cloudwatch-role-policy.json
+aws iam create-role --profile appvia-workshop-user --role-name CloudWatchServiceRole-<YOUR INITIALS> --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
+aws iam put-role-policy --profile appvia-workshop-user --role-name CloudWatchServiceRole-<YOUR INITIALS> --policy-name CloudWatchServiceRolePolicy-<YOUR INITIALS> --policy-document file://config/iam-cloudwatch-role-policy.json
 ```
 
 2. Create a CloudWatch rule that triggers a continuous integration workflow when a CodeCommit pull request is created and/or updated.
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 AWS_REGION="eu-west-2"
-CODECOMMIT_REPOSITORY="kore-example-apps"
-CLOUDWATCH_RULE="trigger-ci-workflow-on-pr"
+CODECOMMIT_REPOSITORY="kore-example-apps-<YOUR INITIALS>"
+CLOUDWATCH_RULE="trigger-ci-workflow-on-pr<YOUR INITIALS>"
 ```
 ```bash
 aws events put-rule \
@@ -128,9 +128,9 @@ aws events put-targets \
 ```bash
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 AWS_REGION="eu-west-2"
-CODECOMMIT_REPOSITORY="kore-example-apps"
-CLOUDWATCH_RULE="trigger-ci-workflow-on-pr-merged"
-CODEBUILD_PROJECT="dotnet-hello-world-code-coverage"
+CODECOMMIT_REPOSITORY="kore-example-apps-<YOUR INITIALS>"
+CLOUDWATCH_RULE="trigger-ci-workflow-on-pr-merged-<YOUR INITIALS>"
+CODEBUILD_PROJECT="dotnet-hello-world-code-coverage-<YOUR INITIALS>"
 ```
 ```bash
 aws events put-rule \
@@ -179,11 +179,11 @@ Create an account on [SonarCloud](https://sonarcloud.io) and [generate a token](
 ### Create Parameters in Systems Manager Parameter store
 Add the following as parameters of type `SecureString` in Systems Manager Parameter Store by following one of the approaches detailed below.
 ```
-HELM_KUBEAPISERVER # The Kubernetes API Server URL
-HELM_KUBETOKEN     # The Kubernetes Service Account token
-HELM_NAMESPACE     # The Kubernetes namespace
-EKS_CLUSTER_CA     # The Kubernetes cluster certificate authority (Only applies to AWS EKS)
-SONAR_TOKEN        # The SonarCloud token
+HELM_KUBEAPISERVER_<YOUR INITIALS> # The Kubernetes API Server URL
+HELM_KUBETOKEN_<YOUR INITIALS>     # The Kubernetes Service Account token
+HELM_NAMESPACE_<YOUR INITIALS>     # The Kubernetes namespace
+EKS_CLUSTER_CA_<YOUR INITIALS>     # The Kubernetes cluster certificate authority (Only applies to AWS EKS)
+SONAR_TOKEN_<YOUR INITIALS>        # The SonarCloud token
 ```
 
 If you wish to you an AWS-managed KMS key then:
