@@ -64,7 +64,7 @@ git add . && git commit -m "initial commit" && git push -u origin master
 1. Create an IAM role that enables CodeBuild to interact with dependent AWS services on behalf of the AWS account.  
 ```bash
 aws iam create-role --profile appvia-workshop-user --role-name CodeBuildServiceRole-<YOUR INITIALS> --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"codebuild.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
-aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole-<YOUR INITIALS> --policy-name CodeBuildServiceRolePolicy --policy-document file://config/iam-codebuild-role-policy.json
+aws iam put-role-policy --profile appvia-workshop-user --role-name CodeBuildServiceRole-<YOUR INITIALS> --policy-name CodeBuildServiceRolePolicy-<YOUR INITIALS> --policy-document file://config/iam-codebuild-role-policy.json
 ```
 
 2. Create a build project that references the CodeCommit repository and the [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml).
@@ -74,7 +74,7 @@ CODEBUILD_PROJECT="dotnet-hello-world-build-deploy-<YOUR INITIALS>"
 aws codebuild create-project \
  --profile appvia-workshop-user \
  --name ${CODEBUILD_PROJECT} \
- --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec.yml\"}" \
+ --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps-<YOUR INITIALS>\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec.yml\"}" \
  --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
  --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole-<YOUR INITIALS>" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
@@ -88,7 +88,7 @@ CODEBUILD_PROJECT="dotnet-hello-world-code-coverage-<YOUR INITIALS>"
 aws codebuild create-project \
  --profile appvia-workshop-user \
  --name ${CODEBUILD_PROJECT} \
- --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml\"}" \
+ --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps-<YOUR INITIALS>\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml\"}" \
  --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
  --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole-<YOUR INITIALS>" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
