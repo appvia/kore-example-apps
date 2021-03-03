@@ -75,7 +75,7 @@ aws codebuild create-project \
  --profile appvia-workshop-user \
  --name ${CODEBUILD_PROJECT} \
  --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec.yml\"}" \
- --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
+ --environment "{\"privilegedMode\": true, \"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
  --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
  --source-version "refs/heads/master"
@@ -89,7 +89,7 @@ aws codebuild create-project \
  --profile appvia-workshop-user \
  --name ${CODEBUILD_PROJECT} \
  --source "{\"type\": \"CODECOMMIT\",\"location\": \"https://git-codecommit.eu-west-2.amazonaws.com/v1/repos/kore-example-apps\", \"buildspec\": \"dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml\"}" \
- --environment "{\"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
+ --environment "{\"privilegedMode\": true, \"type\": \"LINUX_CONTAINER\",\"image\": \"aws/codebuild/amazonlinux2-x86_64-standard:3.0\",\"computeType\": \"BUILD_GENERAL1_SMALL\"}" \
  --service-role "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CodeBuildServiceRole" \
  --artifacts "{\"type\": \"NO_ARTIFACTS\"}" \
  --source-version "refs/heads/master"
@@ -179,11 +179,19 @@ Create an account on [SonarCloud](https://sonarcloud.io) and [generate a token](
 ### Create Parameters in Systems Manager Parameter store
 Add the following as parameters of type `SecureString` in Systems Manager Parameter Store by following one of the approaches detailed below.
 ```
-HELM_KUBEAPISERVER # The Kubernetes API Server URL
-HELM_KUBETOKEN     # The Kubernetes Service Account token
-HELM_NAMESPACE     # The Kubernetes namespace
-EKS_CLUSTER_CA     # The Kubernetes cluster certificate authority (Only applies to AWS EKS)
+EKS_CLUSTER_CA     # The Kubernetes cluster certificate authority (Only applies to AWS EKS) to be retrieved programmatically as instructed below
+HELM_KUBEAPISERVER # The Kubernetes API Server URL to be retrieved programmatically as instructed below
+HELM_KUBETOKEN     # The Kubernetes Service Account token created in the previous step
+HELM_NAMESPACE     # The Kubernetes namespace created with the Kore UI or CLI
 SONAR_TOKEN        # The SonarCloud token
+```
+
+You can retrieve the `EKS_CLUSTER_CA` and `HELM_KUBEAPISERVER` programmatically:
+```bash
+CLUSTER_NAME=""
+
+EKS_CLUSTER_CA=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.certificateAuthority.data' --output text)
+HELM_KUBEAPISERVER=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.endpoint' --output text)
 ```
 
 If you wish to you an AWS-managed KMS key then:

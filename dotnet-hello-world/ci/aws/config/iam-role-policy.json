@@ -14,7 +14,8 @@
               "events:PutTargets",
               "ssm:PutParameter",
               "kms:CreateKey",
-              "kms:TagResource"
+              "kms:TagResource",
+              "eks:DescribeCluster"
             ],
             "Resource": "*"
         }
