@@ -174,7 +174,28 @@ kubectl get secret -n <NAMESPACE> $(kubectl -n <NAMESPACE> get serviceaccount <S
 ```
 
 ### Create SonarCloud account
-Create an account on [SonarCloud](https://sonarcloud.io) and [generate a token](https://sonarcloud.io/account/security/) to access a SonarCloud project.
+Create an account on [SonarCloud](https://sonarcloud.io) add an organisation and [generate a token](https://sonarcloud.io/account/security/) to access a SonarCloud project.
+
+Add your organisation and project name to your [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml).
+
+```
+  build:
+    commands:
+      - |
+        dotnet tool install --global dotnet-sonarscanner --version 5.0.4
+        dotnet-sonarscanner begin \
+          /k:"<ORGANISATION>_kore-example-apps-<YOUR-INITIALS>" \
+          /o:"<ORGANISATION>" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.login="$SONAR_TOKEN" \
+          /d:sonar.sources="dotnet-hello-world/src" \
+          /d:sonar.tests="dotnet-hello-world/tests" \
+          /d:sonar.cs.opencover.reportsPaths="results/*/coverage.opencover.xml"
+        dotnet build dotnet-hello-world/src
+        dotnet test dotnet-hello-world/tests --collect:"XPlat Code Coverage" --results-directory results -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+```
+
 
 ### Create Parameters in Systems Manager Parameter store
 Add the following as parameters of type `SecureString` in Systems Manager Parameter Store by following one of the approaches detailed below.
@@ -229,6 +250,11 @@ aws --profile appvia-workshop-user kms create-key --tags TagKey=Name,TagValue=ap
     }
 }
 ```
+
+
+Make sure to update both [buildspec.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec.yml) and [buildspec-sonarcloud.yml](https://github.com/appvia/kore-example-apps/blob/main/dotnet-hello-world/ci/aws/config/buildspec-sonarcloud.yml) to reflect your parameter names
+
+
 
 
 ## Triggering the CI pipeline
