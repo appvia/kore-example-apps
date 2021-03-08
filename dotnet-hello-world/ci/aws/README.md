@@ -207,6 +207,14 @@ EKS_CLUSTER_CA_<YOUR INITIALS>     # The Kubernetes cluster certificate authorit
 SONAR_TOKEN_<YOUR INITIALS>        # The SonarCloud token
 ```
 
+You can retrieve the `EKS_CLUSTER_CA` and `HELM_KUBEAPISERVER` programmatically:
+```bash
+CLUSTER_NAME=""
+
+EKS_CLUSTER_CA=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.certificateAuthority.data' --output text)
+HELM_KUBEAPISERVER=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.endpoint' --output text)
+```
+
 If you wish to you an AWS-managed KMS key then:
 ```bash
 SSM_PARAM_NAME=""
