@@ -13,7 +13,8 @@ All templates available [here](https://docs.microsoft.com/en-us/dotnet/core/tool
 ## Build and package the application
 
 ```
-docker build -t dotnet-core-hello-world .
+docker build -t quay.io/appvia/dotnet-hello-world .
+docker push quay.io/appvia/dotnet-hello-world
 ```
 
 More information available [here](https://docs.docker.com/engine/examples/dotnetcore/).
@@ -23,7 +24,7 @@ More information available [here](https://docs.docker.com/engine/examples/dotnet
 ### Docker
 
 ```
-docker run --name dotnet-core-hello-world -d -p 8080:80 dotnet-core-hello-world
+docker run --name dotnet-core-hello-world -d -p 8080:80 quay.io/appvia/dotnet-hello-world
 ```
 
 ### Helm
