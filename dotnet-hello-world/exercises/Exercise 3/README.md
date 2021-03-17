@@ -34,6 +34,8 @@ Kubernetes is declaritive, reconciling actual and desired state, all we need to 
 
 We will now deploy our application using YAML manifest files. We have provided two options for this section, pick which one feels best for you.
 
+
+
 First off we need to create a namespace. We can either do this via the CLI 
 
 ```
@@ -43,6 +45,14 @@ First off we need to create a namespace. We can either do this via the CLI
 Alternatively you can login to the Kore UI https://portal.example.com select your cluster and create namespace
 
 Now export this namespace to a variable `NAMESPACE="<YOUR_NAMESPACE>"`
+
+The first thing we need to do is create a deployment, you can either do this as below or use the example manifests provides
+
+```
+kubectl -n ${NAMESPACE} apply -f deployment.yaml
+```
+
+Or...
 
 ```
 cat <<EOF | kubectl -n ${NAMESPACE} apply -f -
@@ -54,7 +64,7 @@ spec:
   selector:
     matchLabels:
       app: dotnet-core-hello-world
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -69,6 +79,31 @@ spec:
           protocol: TCP
 EOF
 ```
+
+You can take a look at what has been created by running
+
+```
+kubectl get all -n $NAMESPACE
+```
+
+we can scale our deployment by running:
+
+```
+kubectl scale --current-replicas=1 --replicas=3 deployment/dotnet-core-hello-world-deployment -n $NAMESPACE
+```
+
+Now delete a pod using `kubectl delete pod` its `NAME` and make sure you refernce your `namsepace`
+
+What happens? Is it what you expected?
+
+Next, we want to create a network connection to our pod(s) due to us potentially having multiple pods that will also get new IP addresses on restart we can use a service resource to give us an unchanging IP and routing to an matching pod.
+
+```
+kubectl -n ${NAMESPACE} apply -f service.yaml
+```
+
+Or...
+
 ```
 cat <<EOF | kubectl -n ${NAMESPACE} apply -f -
 apiVersion: v1
@@ -87,27 +122,6 @@ spec:
     app: dotnet-core-hello-world
 EOF
 ```
+Services are useful for routing internal traffic but what about external traffic? How do we also handle secure connections using TLS? How do we us external DNS? This is where the `ingress` resource is used. Things are now getting a bit more complicated but luckily Kore can handle this for you.
 
-```
-cat <<EOF | kubectl -n ${NAMESPACE} apply -f -
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: dotnet-core-hello-world-ingress
-  annotations:
-    kubernetes.io/ingress.class: "external"
-    cert-manager.io/cluster-issuer: "prod-le-dns01"
-spec:
-  rules:
-  - host: tmf.demo-eks.demo.teams.demo.kore.appvia.io
-    http:
-      paths:
-      - backend:
-          serviceName: dotnet-core-hello-world
-          servicePort: 8080
-  tls:
-  - hosts:
-    - tmf.demo-eks.demo.teams.demo.kore.appvia.io
-    secretName: dotnet-core-hello-world-ingress-tls
-EOF
-```
+We are now going to walkthrough the Kore UI to create Ingress, using Kore managed TLS and external DNS.
