@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/myjaffoo/dotnet-hello-world
-  tag: 626b904-dirty
+  repository: quay.io/appvia/dotnet-hello-world
+  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
