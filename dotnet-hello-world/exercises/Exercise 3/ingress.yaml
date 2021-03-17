@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: <NAME>
+  annotations:
+    kubernetes.io/ingress.class: "external"
+    cert-manager.io/cluster-issuer: "<CA>"
+spec:
+  rules:
+  - host: <HOST_URL>
+    http:
+      paths:
+      - backend:
+          serviceName: dotnet-core-hello-world
+          servicePort: 8080
+  tls:
+  - hosts:
+    - <HOST_URL>
+    secretName: <SECRET>
