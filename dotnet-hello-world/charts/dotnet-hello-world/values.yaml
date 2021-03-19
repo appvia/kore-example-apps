@@ -37,15 +37,15 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: le-prod
+    cert-manager.io/cluster-issuer: prod-le
   hosts:
-    - host: demo-eks.demo.teams.demo.kore.appvia.io
+    - host: hello.workshop-eks-development.workshop.teams.demo.kore.appvia.io
       paths:
         - /
   tls:
     - secretName: dotnet-hello-world-tls
       hosts:
-        - demo-eks.demo.teams.demo.kore.appvia.io
+        - hello.workshop-eks-development.workshop.teams.demo.kore.appvia.io
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
