@@ -76,10 +76,7 @@ jobs:
           HELM_KUBETOKEN: ${{ secrets.HELM_KUBETOKEN }}
           HELM_NAMESPACE: ${{ secrets.HELM_NAMESPACE }}
           IMAGE_REPOSITORY: ${{ secrets.HELM_IMAGE_REPOSITORY }}
-        run: helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world \
-          --install \
-          --set image.repository="$IMAGE_REPOSITORY" \
-          --set image.tag=${{ github.sha }}
+        run: helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.repository="$IMAGE_REPOSITORY" --set image.tag=${{ github.sha }}
 
   static_code_analysis:
     runs-on: ubuntu-latest
