@@ -1,10 +1,16 @@
 # Exercise 3
 
+### Kubernetes 101 With Kore
+
 Now that we have explored building, running and pushing container images, let's get a little more adventurous and run it in Kubernetes.
 
 There are many ways to get a Kubernetes cluster but we are going to use Kore to simplify the process and give us a "real world" development cluster we can deploy to.
 
+### Configure Context
+
 First off, we need to login to the Kore platform from the CLI using `kore login` this will take you to the Kore login portal, use the credentials provided to you. Once this is done we need to set our Kubernetes context, luckily the platform makes this very easy for us! `kore kubeconfig -t <TEAM_NAME>`
+
+### Hello K8s
 
 Let's start off by running the image you built earlier. If you didn't manage to push and image to a repository you can use our example instead
 
@@ -12,6 +18,7 @@ Let's start off by running the image you built earlier. If you didn't manage to 
 ➜  ~ kubectl run dotnet-hello-world --image=quay.io/appvia/dotnet-hello-world --port=8080 --labels app=hello-world
 pod/dotnet-hello-world created
 ```
+### View Pods
 
 You can now view your running pods with 
 
@@ -27,6 +34,8 @@ Now remove the pod using
 ➜  ~ kubectl delete pod dotnet-hello-world
 pod "dotnet-hello-world" deleted
 ```
+
+### Manifests
 
 Using the `kubectl run` command is useful but limited. If you wanted to change the spec: image name or version. You would need to delete your Deployment and create a new one.
 

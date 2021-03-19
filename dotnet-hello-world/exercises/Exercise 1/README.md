@@ -6,13 +6,19 @@ If you do not already have Git installed then follow the installation instructio
 
 # Exercise 1
 
+### Install Docker
+
 We are going to use Docker to run a simple containerized application. If you have Docker installed feel free to carry on. Docker for desktop (Mac/Windows) can be found here https://www.docker.com/products/docker-desktop and Docker engine for Linux can be found here https://www.docker.com/products/container-runtime
+
+### Run A Docker Container
 
 We are using a demo application for this workshop to demonstrate with. You can download and run the application using a container image we prepaired earlier. Run the following command to try it:
 
 `docker run --name dotnet-core-hello-world -d -p 8080:80 quay.io/appvia/dotnet-hello-world`
 
 Now point your browser to http://localhost:8080 to see our example app.
+
+### Controlling Docker
 
 Notice the `-d` argument in the command above, this means we are running the container in the background. 
 
@@ -47,7 +53,13 @@ Stop Container: docker stop dotnet-core-hello-world
 Delete Container: docker rm dotnet-core-hello-world
 ```
 
-Once you are finished make sure to remove the container to keep everything clean and tidy.
+### Clean Up
+
+Once you are finished make sure to remove the container to keep everything clean and tidy. The following command will remove all unused containers, networks, images (both dangling and unreferenced), and optionally, volumes.
+
+```
+➜  ~ docker system prune
+```
 
 ## Exercise 1 - Stretch
 

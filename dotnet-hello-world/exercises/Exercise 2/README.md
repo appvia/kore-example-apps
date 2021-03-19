@@ -1,6 +1,6 @@
 # Exercise 2
 
-Fork and Clone the example repository:
+### Fork and Clone the example repository
 
 using ssh:
 
@@ -16,7 +16,11 @@ git clone https://github.com/appvia/kore-example-apps.git
 
 The Git repositroy contains the demo application we will be using throughout this workshop under **kore-example-apps/dotnet-hello-world/src/**
 
+### Dockerfile
+
 Examine the Dockerfile in **/dotnet-hello-world**
+
+### Build A Container
 
 ```
 ➜  ~ cd dotnet-hello-world
@@ -30,6 +34,8 @@ If you build an image, by default it will just get a hexadecimal ID. Using the `
 
 Let's see if it works:
 
+### Run Your Container
+
 ```
 ➜  ~ docker run -p 8080:80 hello-world:v0.1
 ```
@@ -38,7 +44,11 @@ You are now running your own copy of the demo application, you can check it by n
 
 ## Exercise 2 - Stretch
 
+### Get Creative
+
 Make some changes to the source code, be as creative as you like! Rebuild the image and run it.
+
+### Repositories
 
 Docker can be used perfectly well by building and running local images but it more useful if you push these images to a `container registry` This allows you to store images and retrieve them using a unique name.
 
