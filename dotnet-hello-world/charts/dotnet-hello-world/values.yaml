@@ -36,7 +36,7 @@ service:
 ingress:
   enabled: true
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: external
     cert-manager.io/cluster-issuer: prod-le
   hosts:
     - host: hello.workshop-eks-development.workshop.teams.demo.kore.appvia.io
