@@ -38,15 +38,9 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: external
     cert-manager.io/cluster-issuer: prod-le
-  hosts:
-    - host: hello.workshop-eks-development.workshop.teams.demo.kore.appvia.io
-      paths:
-        - /
-  tls:
-    - secretName: dotnet-hello-world-tls
-      hosts:
-        - hello.workshop-eks-development.workshop.teams.demo.kore.appvia.io
-
+  hosts: {}
+  tls: {}
+  
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
