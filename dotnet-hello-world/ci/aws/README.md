@@ -57,11 +57,28 @@ pip install git-remote-codecommit --user
   export PATH=$PATH:/Users/mohammudyassinejaffoo/Library/Python/3.8/bin
   ```
 
-3. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
+3. Prepare local repository by pulling relevant content from kore-example-apps GitHub repository.
 ```bash
-git clone https://github.com/appvia/kore-example-apps.git
-cd kore-example-apps && rm -rf .github .git
-git init && git remote add origin codecommit://appvia-workshop-user@kore-example-apps-<YOUR INITIALS> && \
+YOUR_INITIAL=""
+mkdir -p kore-example-apps-$YOUR_INITIAL && cd kore-example-apps-$YOUR_INITIAL
+git init
+git remote add -f origin https://github.com/appvia/kore-example-apps.git
+git config core.sparseCheckout true
+cat <<EOF > .git/info/sparse-checkout
+/*
+!dotnet-hello-world/ci/github-actions
+!dotnet-hello-world/exercises
+!dotnet-hello-world/images
+!dotnet-hello-world/docker-compose.yml
+EOF
+git pull origin main
+```
+
+4. Push local changes to AWS Code Commit repository.
+```bash
+YOUR_INITIAL=""
+cd kore-example-apps-$YOUR_INITIAL && rm -rf .git
+git init && git remote add origin codecommit://appvia-workshop-user@kore-example-apps-$YOUR_INITIAL
 git add . && git commit -m "initial commit" && git push -u origin master
 ```
 
