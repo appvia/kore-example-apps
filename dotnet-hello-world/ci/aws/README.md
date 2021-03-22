@@ -287,3 +287,7 @@ You can now start making code changes and trigger the `pull request` and `pull r
 
 
 ![AWS CodePipeline CI Pipeline](../../images/aws-codebuild-ci.png)
+
+## Access Web application
+
+https://hello.aws-codebuild-workshop.teams.demo.kore.appvia.io
