@@ -8,10 +8,6 @@ For demonstration purposes, code changes in a `pull request` or code changes mer
 
 ## Prerequisites
 
-Before starting this section it is recommended that namespaces, deployments and releases from previous exercises are cleaned up.
-
-## Prerequisites
-
 The following scripts must be executed by an **AWS administrator** to ensure that a developer is granted least privileged permissions to complete the setup.
 
 ```bash
@@ -38,6 +34,8 @@ region=eu-west-2
 ## Getting started
 
 ### Create and connect to CodeCommit repository
+
+***Before starting this section it is recommended that namespaces, deployments and releases from previous exercises are cleaned up.***
 
 1. Create a new CodeCommit repository.
 ```bash
