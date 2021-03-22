@@ -44,12 +44,14 @@ aws --profile appvia-workshop-user codecommit create-repository --repository-nam
 ```bash
 pip install git-remote-codecommit --user
 ```
+
   If `pip` warns you that git-remote-commit has been installed in a directory which is not in your PATH, then you must add it e.g.
-```
-Installing collected packages: git-remote-codecommit
-  WARNING: The script git-remote-codecommit is installed in '/Users/mohammudyassinejaffoo/Library/Python/3.8/bin' which is not on PATH.
-  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-```
+
+  ```
+  Installing collected packages: git-remote-codecommit
+    WARNING: The script git-remote-codecommit is installed in '/Users/mohammudyassinejaffoo/Library/Python/3.8/bin' which is not on PATH.
+    Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  ```
 
   ```bash
   export PATH=$PATH:/Users/mohammudyassinejaffoo/Library/Python/3.8/bin
