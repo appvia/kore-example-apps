@@ -40,10 +40,20 @@ region=eu-west-2
 aws --profile appvia-workshop-user codecommit create-repository --repository-name kore-example-apps-<YOUR INITIALS>
 ```
 
-2. Install the [git-remote-codecommit](https://pypi.org/project/git-remote-codecommit/) utility on your local computer to provide a simple method for pushing and pulling code from CodeCommit repositories. It extends Git by enabling the use of AWS temporary credentials.
+2. Install the [git-remote-codecommit](https://pypi.org/project/git-remote-codecommit/) utility on your local computer to provide a simple method for pushing and pulling code from CodeCommit repositories. It extends Git by enabling the use of AWS temporary credentials. Python (version 3 or later) and its package manager, pip, are required if they are not already installed.
 ```bash
-pip install git-remote-codecommit
+pip install git-remote-codecommit --user
 ```
+  If `pip` warns you that git-remote-commit has been installed in a directory which is not in your PATH, then you must add it e.g.
+```
+Installing collected packages: git-remote-codecommit
+  WARNING: The script git-remote-codecommit is installed in '/Users/mohammudyassinejaffoo/Library/Python/3.8/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+```
+
+  ```bash
+  export PATH=$PATH:/Users/mohammudyassinejaffoo/Library/Python/3.8/bin
+  ```
 
 3. Clone the existing `kore-example-apps` GitHub repository and push to the new CodeCommit repository.
 ```bash

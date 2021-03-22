@@ -32,3 +32,7 @@ DOTNET_KORE_TOKEN  # The Kore Service Account token
 You can now start making code changes and trigger the `pull request` and `pull request merged` workflows as demonstrated in the diagram below.  
 
 ![Github Actions CI Pipeline](../../images/github-actions-ci.png)
+
+## Access Web application
+
+https://hello.gh-actions-workshop.teams.demo.kore.appvia.io
