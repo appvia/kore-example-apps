@@ -48,7 +48,7 @@ jobs:
 
       - name: Download Kore CLI
         run: |
-          sudo curl https://storage.googleapis.com/kore-releases/v0.4.0-beta9/kore-cli-linux-amd64 -o /usr/local/bin/kore
+          sudo curl https://storage.googleapis.com/kore-releases/v0.6.2/kore-cli-linux-amd64 -o /usr/local/bin/kore
           sudo chmod +x /usr/local/bin/kore
 
       - name: Trigger Kore build and push
@@ -76,7 +76,7 @@ jobs:
           HELM_KUBETOKEN: ${{ secrets.HELM_KUBETOKEN }}
           HELM_NAMESPACE: ${{ secrets.HELM_NAMESPACE }}
           IMAGE_REPOSITORY: ${{ secrets.HELM_IMAGE_REPOSITORY }}
-        run: helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.repository="$IMAGE_REPOSITORY" --set image.tag=${{ github.sha }} --set ingress.tls[0].secretName=dotnet-hello-world-tls  --set ingress.tls[0].hosts[0]=hello.gh-actions-workshop.teams.demo.kore.appvia.io --set ingress.hosts[0].host=hello.gh-actions-workshop.teams.demo.kore.appvia.io --set ingress.hosts[0].paths[0]=/
+        run: helm upgrade dotnet-hello-world dotnet-hello-world/charts/dotnet-hello-world --install --set image.repository="$IMAGE_REPOSITORY" --set image.tag=${{ github.sha }} --set ingress.tls[0].secretName=dotnet-hello-world-tls --set ingress.tls[0].hosts[0]=hello.gh-actions-workshop.teams.demo.kore.appvia.io --set ingress.hosts[0].host=hello.gh-actions-workshop.teams.demo.kore.appvia.io --set ingress.hosts[0].paths[0]=/
 
   static_code_analysis:
     runs-on: ubuntu-latest
