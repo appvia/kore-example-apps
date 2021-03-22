@@ -5,7 +5,7 @@ env:
   variables:
     DOTNET_VERSION: '3.1'
   parameter-store:
-    SONAR_TOKEN: "SONAR_TOKEN"
+    SONAR_TOKEN: "SONAR_TOKEN_YJ"
 
 phases:
   install:

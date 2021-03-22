@@ -73,6 +73,7 @@ git remote add -f origin https://github.com/appvia/kore-example-apps.git
 git config core.sparseCheckout true
 cat <<EOF > .git/info/sparse-checkout
 /*
+!.github
 !dotnet-hello-world/ci/github-actions
 !dotnet-hello-world/exercises
 !dotnet-hello-world/images
@@ -226,7 +227,7 @@ SONAR_TOKEN_<YOUR INITIALS>        # The SonarCloud token
 You can retrieve the `CLUSTER_NAME`, `EKS_CLUSTER_CA` and `HELM_KUBEAPISERVER` programmatically:
 ```bash
 CLUSTER_NAME=$(kore -t workshop get clusters -o json | jq -r '.items[0].metadata.name')
-EKS_CLUSTER_CA=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.certificateAuthority.data' --output text)
+EKS_CLUSTER_CA=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.certificateAuthority.data' --output text | base64 --decode)
 HELM_KUBEAPISERVER=$(aws --profile appvia-workshop-user eks describe-cluster --name ${CLUSTER_NAME} --query 'cluster.endpoint' --output text)
 ```
 
@@ -236,7 +237,7 @@ SSM_PARAM_NAME=""
 SSM_PARAM_DESC=""
 SSM_PARAM_VALUE=""
 
-aws --profile appvia-workshop-user ssm put-parameter --name ${SSM_PARAM_NAME} --description ${SSM_PARAM_DESC} --value ${SSM_PARAM_VALUE} --type SecureString
+aws --profile appvia-workshop-user ssm put-parameter --name "${SSM_PARAM_NAME}" --description "${SSM_PARAM_DESC}" --value "${SSM_PARAM_VALUE}" --type SecureString
 ```
 
 If you wish to use your own or a shared key i.e. Customer-managed KMS key then:
