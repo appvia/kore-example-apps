@@ -6,6 +6,12 @@ Now that we have explored building, running and pushing container images, let's 
 
 There are many ways to get a Kubernetes cluster but we are going to use Kore to simplify the process and give us a "real world" development cluster we can deploy to.
 
+You'll need a couple of things to complete this section:
+
+- kubectl https://kubernetes.io/docs/tasks/tools/
+- Kore CLI https://docs.appvia.io/kore/cli
+- Helm https://helm.sh/docs/intro/install/
+
 ### Configure Context
 
 First off, we need to login to the Kore platform from the CLI using `kore login` this will take you to the Kore login portal, use the credentials provided to you. Once this is done we need to set our Kubernetes context, luckily the platform makes this very easy for us! `kore kubeconfig -t <TEAM_NAME>`

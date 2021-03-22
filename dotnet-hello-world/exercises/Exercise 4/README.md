@@ -1,12 +1,22 @@
 # Exercise 4
 
-Helm Placeholder
-
 ### Helm
+
+You can now deploy applciations to Kubernetes using declaritive YAML but there is a lot of repitition such a name, selectors and ports. With HELM (and other package managers) we can specify a value once and then reference it wherever it should appear in the manifest files.
+
+Helm should be installed at this point but if it isn't:
+
+- Helm https://helm.sh/docs/intro/install/
+
 
 ```
 helm install dotnet-hello-world charts/dotnet-hello-world -n ${NAMESPACE}
-kubectl port-forward service/dotnet-hello-world 8080 8080 -n ${NAMESPACE}
+```
+
+You can check what releases you have running any time, run `helm list`
+
+```
+helm list -n ${NAMESPACE}
 ```
 
 ### Helm Flux Operator
