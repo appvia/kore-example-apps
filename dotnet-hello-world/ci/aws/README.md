@@ -40,7 +40,6 @@ export YOUR_INITIAL=""
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 export AWS_REGION="eu-west-2"
 export PROJECT_ROOT=$(git rev-parse --show-toplevel)
-export KORE_TEAM="workshop"
 ```
 
 ### Create and connect to CodeCommit repository
