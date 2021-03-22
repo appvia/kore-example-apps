@@ -39,7 +39,6 @@ region=eu-west-2
 export YOUR_INITIAL=""
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile appvia-workshop-user --query "Account" --output text)
 export AWS_REGION="eu-west-2"
-export PROJECT_ROOT=$(git rev-parse --show-toplevel)
 ```
 
 ### Create and connect to CodeCommit repository
@@ -128,6 +127,7 @@ aws codebuild create-project \
 
 1. Create an IAM role that enables CloudWatch to start builds for the CodeBuild projects.
 ```bash
+PROJECT_ROOT=$(git rev-parse --show-toplevel)
 aws iam create-role --profile appvia-workshop-user --role-name CloudWatchServiceRole-${YOUR_INITIAL} --assume-role-policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Action\": \"sts:AssumeRole\"}]}"
 aws iam put-role-policy --profile appvia-workshop-user --role-name CloudWatchServiceRole-${YOUR_INITIAL} --policy-name CloudWatchServiceRolePolicy-${YOUR_INITIAL} --policy-document file://${PROJECT_ROOT}/dotnet-hello-world/ci/aws/config/iam-cloudwatch-role-policy.json
 ```
