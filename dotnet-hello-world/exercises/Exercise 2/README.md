@@ -77,3 +77,19 @@ Now you can push the image to Docker Hub
 ```
 
 You will notice that we are using Docker Hub here and used quay.io on an earlier example. We will be using a different registry in our pipeline later on but the principle is the same, it is somewhere to store our images (both public and private)
+
+### Repositories With Kore
+
+To make life easy, we can actually offload the building of the container to Kore and then push to a repository that Kore has created for us. In this example we will use ECR.
+
+Straight from the Kore docs! "Container builds provides the ability to perform docker builds within the Kore environment, maintain oversight as to whom have credentials and shifting the burden of managing registry tokens and the cluster permissions over to Kore. Builds are registered in Kore, linking the git repository, optional access token for private repository and registry to push the image. Kore will then take care of the build, push and ensure all the clusters within the team have access to pull down the image."
+
+```
+kore create registry ecr <YOUR REGISTRY> -t <YOUR TEAM>
+```
+
+Now all we need to do is edit the build configuration under container builds in Kore then run the following to trigger:
+
+```
+kore run build <NAME> -t <YOUR TEAM> -b main
+```
