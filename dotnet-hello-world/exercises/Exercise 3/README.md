@@ -107,11 +107,11 @@ we can scale our deployment by running:
 kubectl scale --current-replicas=1 --replicas=3 deployment/dotnet-core-hello-world-deployment -n $NAMESPACE
 ```
 
-Now delete a pod using `kubectl delete pod` its `NAME` and make sure you refernce your `namsepace`
+Now delete a pod using `kubectl delete pod` its `NAME` and make sure you reference your `namespace`
 
 What happens? Is it what you expected?
 
-Next, we want to create a network connection to our pod(s) due to us potentially having multiple pods that will also get new IP addresses on restart we can use a service resource to give us an unchanging IP and routing to an matching pod.
+Next, we want to create a network connection to our pod(s) due to us potentially having multiple pods that will also get new IP addresses on restart we can use a service resource to give us an unchanging IP and routing to matching our pod(s).
 
 ```
 kubectl -n ${NAMESPACE} apply -f service.yaml
@@ -137,6 +137,6 @@ spec:
     app: dotnet-core-hello-world
 EOF
 ```
-Services are useful for routing internal traffic but what about external traffic? How do we also handle secure connections using TLS? How do we us external DNS? This is where the `ingress` resource is used. Things are now getting a bit more complicated but luckily Kore can handle this for you.
+Services are useful for routing internal traffic but what about external traffic? How do we also handle secure connections using TLS? How do we use external DNS? This is where the `ingress` resource is used. Things are now getting a bit more complicated but luckily Kore can handle this for you.
 
 We are now going to walkthrough the Kore UI to create Ingress, using Kore managed TLS and external DNS.

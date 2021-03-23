@@ -2,7 +2,7 @@
 
 ### Helm
 
-You can now deploy applciations to Kubernetes using declaritive YAML but there is a lot of repitition such as name, selectors and ports. With HELM (and other package managers) we can specify a value once and then reference it wherever it should appear in the manifest files.
+You can now deploy applications to Kubernetes using declarative YAML but there is a lot of repetition such as name, selectors and ports. With HELM (and other package managers) we can specify a value once and then reference it wherever it should appear in the manifest files.
 
 Helm should be installed at this point but if it isn't:
 
@@ -23,12 +23,12 @@ helm list -n ${NAMESPACE}
 To clean up your release you can run `helm uninstall`
 
 ```
-helm uninstall dotnet-hello-world -n $NAMESPACE
+helm uninstall dotnet-hello-world -n ${NAMESPACE}
 ```
 
 ### Helm Flux Operator
 
-If you want to take things a little further we can use the `HelmRelease` custom resource 
+If you want to take things a little further we can use the `HelmRelease` custom resource
 
 First, we need to create a secret with the username and password that give access to your Git repository:
 ```
