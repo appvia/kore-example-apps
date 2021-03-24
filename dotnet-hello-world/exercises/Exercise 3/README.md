@@ -18,10 +18,18 @@ First off, we need to login to the Kore platform from the CLI using `kore login`
 
 ### Hello K8s
 
+First off, set the namespace variable to your initials `export YOUR_INITIAL=""`
+
+Now create the namespace
+
+```
+kubectl create namespace $YOUR_INITIAL
+```
+
 Let's start off by running the image you built earlier. If you didn't manage to push and image to a repository you can use our example instead
 
 ```
-➜  ~ kubectl run dotnet-hello-world --image=quay.io/appvia/dotnet-hello-world --port=8080 --labels app=hello-world
+➜  ~ kubectl run dotnet-hello-world --image=quay.io/appvia/dotnet-hello-world --port=8080 --labels app=hello-world -n $YOUR_INITIAL
 pod/dotnet-hello-world created
 ```
 ### View Pods
@@ -29,7 +37,7 @@ pod/dotnet-hello-world created
 You can now view your running pods with 
 
 ```
-➜  ~ kubectl get pods --selector app=hello-world
+➜  ~ kubectl get pods --selector app=hello-world -n $YOUR_INITIAL
 NAME                 READY   STATUS    RESTARTS   AGE
 dotnet-hello-world   1/1     Running   0          80s
 ```
@@ -37,7 +45,7 @@ dotnet-hello-world   1/1     Running   0          80s
 Now remove the pod using 
 
 ```
-➜  ~ kubectl delete pod dotnet-hello-world
+➜  ~ kubectl delete pod dotnet-hello-world - $YOUR_INITIAL
 pod "dotnet-hello-world" deleted
 ```
 
@@ -54,7 +62,7 @@ We will now deploy our application using YAML manifest files. We have provided t
 First off we need to create a namespace. We can either do this via the CLI 
 
 ```
-➜  ~ kore create namespace <YOUR_INITIALS> -t <TEAM_NAME>
+➜  ~ kore create namespace $YOUR_INITIAL -t <TEAM_NAME>
 ```
 
 Alternatively you can login to the Kore UI https://portal.example.com select your cluster and create namespace
