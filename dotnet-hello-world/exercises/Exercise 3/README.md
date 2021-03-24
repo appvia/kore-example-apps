@@ -45,7 +45,7 @@ dotnet-hello-world   1/1     Running   0          80s
 Now remove the pod using 
 
 ```
-➜  ~ kubectl delete pod dotnet-hello-world - $YOUR_INITIAL
+➜  ~ kubectl delete pod dotnet-hello-world -n $YOUR_INITIAL
 pod "dotnet-hello-world" deleted
 ```
 
