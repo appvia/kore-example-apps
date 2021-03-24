@@ -25,7 +25,7 @@ Examine the Dockerfile in **/dotnet-hello-world**
 ```
 ➜  ~ cd dotnet-hello-world
 
-➜  ~ build -t hello-world:v0.1 .
+➜  ~ docker build -t hello-world:v0.1 .
 ```
 
 You just built your container! Docker performs each action in the Dockerfile in sequence on the newly created container, this results in an image we are able to use.
